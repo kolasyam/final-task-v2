@@ -17,21 +17,21 @@ from enum import Enum
 from functools import wraps
 from typing import Any, Callable, Optional
 
+from app.core.constants import (
+    DEFAULT_CIRCUIT_BREAKER_RECOVERY_SECONDS,
+    DEFAULT_CIRCUIT_BREAKER_THRESHOLD,
+)
+from app.core.exceptions import CircuitBreakerOpenError
+
 logger = logging.getLogger(__name__)
 
 
 class CircuitState(Enum):
+    """Circuit breaker state enumeration."""
+
     CLOSED = "closed"
     OPEN = "open"
     HALF_OPEN = "half_open"
-
-
-class CircuitBreakerError(Exception):
-    """Raised when the circuit breaker is open."""
-
-    def __init__(self, message: str = "Circuit breaker is open") -> None:
-        self.message = message
-        super().__init__(self.message)
 
 
 class CircuitBreaker:
@@ -40,20 +40,24 @@ class CircuitBreaker:
     Attributes:
         failure_threshold: Number of failures before opening the circuit.
         recovery_timeout: Seconds to wait before trying half-open.
-        state: Current circuit state.
-        failure_count: Consecutive failure count.
-        last_failure_time: Timestamp of the last failure.
     """
 
     def __init__(
         self,
-        failure_threshold: int = 5,
-        recovery_timeout: float = 30.0,
+        failure_threshold: int = DEFAULT_CIRCUIT_BREAKER_THRESHOLD,
+        recovery_timeout: float = DEFAULT_CIRCUIT_BREAKER_RECOVERY_SECONDS,
         expected_exception: type = Exception,
     ) -> None:
-        self.failure_threshold = failure_threshold
-        self.recovery_timeout = recovery_timeout
-        self.expected_exception = expected_exception
+        """Initialize the circuit breaker.
+
+        Args:
+            failure_threshold: Consecutive failures before opening.
+            recovery_timeout: Seconds before transitioning to half-open.
+            expected_exception: Exception type that counts as a failure.
+        """
+        self.failure_threshold: int = failure_threshold
+        self.recovery_timeout: float = recovery_timeout
+        self.expected_exception: type = expected_exception
 
         self._state: CircuitState = CircuitState.CLOSED
         self._failure_count: int = 0
@@ -64,10 +68,16 @@ class CircuitBreaker:
     def state(self) -> CircuitState:
         """Get current circuit state, checking for recovery timeout."""
         if self._state == CircuitState.OPEN:
-            if time.time() - self._last_failure_time >= self.recovery_timeout:
+            elapsed: float = time.time() - self._last_failure_time
+            if elapsed >= self.recovery_timeout:
                 logger.info("Circuit breaker transitioning to HALF_OPEN")
                 self._state = CircuitState.HALF_OPEN
         return self._state
+
+    @property
+    def is_open(self) -> bool:
+        """Check if the circuit is currently open."""
+        return self.state == CircuitState.OPEN
 
     def call(self, func: Callable, *args: Any, **kwargs: Any) -> Any:
         """Call a function through the circuit breaker.
@@ -81,24 +91,25 @@ class CircuitBreaker:
             Function result.
 
         Raises:
-            CircuitBreakerError: If the circuit is open.
-            Exception: If the function raises an exception.
+            CircuitBreakerOpenError: If the circuit is open.
+            Exception: The original exception if the function raises.
         """
-        current_state = self.state
-
-        if current_state == CircuitState.OPEN:
-            raise CircuitBreakerError(
-                f"Circuit breaker is OPEN. Service unavailable. "
-                f"Will retry in {self.recovery_timeout - (time.time() - self._last_failure_time):.0f}s"
-            )
+        if self.is_open:
+            retry_after: float = self._calculate_retry_after()
+            raise CircuitBreakerOpenError(retry_after=retry_after)
 
         try:
-            result = func(*args, **kwargs)
+            result: Any = func(*args, **kwargs)
             self._on_success()
             return result
-        except self.expected_exception as exc:
+        except self.expected_exception:
             self._on_failure()
             raise
+
+    def _calculate_retry_after(self) -> float:
+        """Calculate remaining time until the circuit may transition."""
+        remaining: float = self.recovery_timeout - (time.time() - self._last_failure_time)
+        return max(0.0, remaining)
 
     def _on_success(self) -> None:
         """Handle a successful call."""
@@ -121,10 +132,10 @@ class CircuitBreaker:
             self._state = CircuitState.OPEN
 
     def get_status(self) -> dict:
-        """Get circuit breaker status.
+        """Get circuit breaker status as a dictionary.
 
         Returns:
-            Status dictionary.
+            Status dictionary with state, counts, and timing.
         """
         return {
             "state": self.state.value,
@@ -133,10 +144,21 @@ class CircuitBreaker:
             "last_failure_time": self._last_failure_time,
         }
 
+    def reset(self) -> None:
+        """Reset the circuit breaker to closed state.
+
+        Useful for testing or manual recovery scenarios.
+        """
+        self._state = CircuitState.CLOSED
+        self._failure_count = 0
+        self._last_failure_time = 0.0
+        self._success_count = 0
+        logger.info("Circuit breaker reset to CLOSED")
+
 
 def circuit_breaker(
-    failure_threshold: int = 5,
-    recovery_timeout: float = 30.0,
+    failure_threshold: int = DEFAULT_CIRCUIT_BREAKER_THRESHOLD,
+    recovery_timeout: float = DEFAULT_CIRCUIT_BREAKER_RECOVERY_SECONDS,
     expected_exception: type = Exception,
 ) -> Callable:
     """Decorator for applying circuit breaker to functions.

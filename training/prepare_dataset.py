@@ -34,7 +34,7 @@ def _load_source_data(path: str) -> pd.DataFrame:
     if not os.path.exists(path):
         raise FileNotFoundError(f"Dataset file not found: {path}")
 
-    df: pd.DataFrame = pd.read_excel(path)
+    df: pd.DataFrame = pd.read_csv(path)
     logger.info("Loaded %d records from %s", len(df), path)
 
     required_columns = {"rep_note", "issue_category"}
@@ -65,7 +65,9 @@ def _validate_record(row: pd.Series, index: int) -> bool:
         logger.warning("Row %d: missing or empty 'rep_note', skipping", index)
         return False
 
-    if issue_category not in CATEGORY_MAP:
+    # if issue_category not in CATEGORY_MAP:
+    normalized_category = str(issue_category).strip().upper()
+    if normalized_category not in CATEGORY_MAP:
         logger.warning(
             "Row %d: unknown issue_category '%s', skipping",
             index,
@@ -85,7 +87,10 @@ def _map_category(uppercase_category: str) -> str:
     Returns:
         Normalized category name.
     """
-    return CATEGORY_MAP.get(uppercase_category, uppercase_category.lower())
+    return CATEGORY_MAP.get(
+        str(uppercase_category).strip().upper(),
+        str(uppercase_category).lower(),
+    )
 
 
 def prepare_dataset(

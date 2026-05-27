@@ -95,7 +95,7 @@ def _load_dataset_for_qlora() -> Dict[str, List[Dict[str, str]]]:
     if not os.path.exists(config.dataset_path):
         raise FileNotFoundError(f"Dataset not found: {config.dataset_path}")
 
-    df = pd.read_excel(config.dataset_path)
+    df = pd.read_csv(config.dataset_path)
     df = df[["rep_note", "issue_category"]].dropna()
     df["input"] = df["rep_note"].str.strip()
     df["output"] = df["issue_category"].map(config.category_map if hasattr(config, "category_map") else {
@@ -181,7 +181,7 @@ def finetune(
         )
 
     gpu_name = torch.cuda.get_device_name(0)
-    gpu_mem = torch.cuda.get_device_properties(0).total_mem / (1024 ** 3)
+    gpu_mem = torch.cuda.get_device_properties(0).total_memory / (1024 ** 3)
     logger.info("GPU: %s (%.1f GB VRAM)", gpu_name, gpu_mem)
 
     if gpu_mem < 6:

@@ -39,3 +39,14 @@ data/*.jsonl
 *.pth
 *.onnx
 *.gguf
+
+# Testing / Coverage
+.coverage
+htmlcov/
+coverage.xml
+test-results.xml
+.pytest_cache/
+
+# SonarQube
+.sonar/
+.scannerwork/

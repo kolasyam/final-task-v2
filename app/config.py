@@ -1,69 +1,43 @@
 """Centralized configuration management for the Sales Intelligence System.
 
-Loads settings from environment variables with sensible defaults.
-All configuration is centralized here to avoid magic values scattered
-throughout the codebase (SonarQube maintainability compliance).
+Loads settings from environment variables with sensible defaults
+defined in app.core.constants. All configuration is centralized here
+to avoid magic values scattered throughout the codebase.
 """
 
 import logging
 import os
 from dataclasses import dataclass, field
-from typing import Dict, List
+from typing import Optional
 
 from dotenv import load_dotenv
+
+from app.core.constants import (
+    DEFAULT_API_HOST,
+    DEFAULT_API_PORT,
+    DEFAULT_CORS_ORIGINS,
+    DEFAULT_MAX_FEATURES,
+    DEFAULT_MODEL_NAME,
+    DEFAULT_N_ESTIMATORS,
+    DEFAULT_OLLAMA_BASE_URL,
+    DEFAULT_OLLAMA_TIMEOUT,
+    DEFAULT_RATE_LIMIT_RPM,
+    DEFAULT_RANDOM_SEED,
+    DEFAULT_STREAMLIT_PORT,
+    DEFAULT_TEST_SIZE,
+)
 
 load_dotenv()
 
 logger = logging.getLogger(__name__)
 
 
-# ---------------------------------------------------------------------------
-# Category mapping: raw dataset values -> normalized output labels
-# ---------------------------------------------------------------------------
-CATEGORY_MAP: Dict[str, str] = {
-    "SUPPLY_CHAIN_ISSUE": "supply_chain_delay",
-    "RETAILER_RELATIONSHIP_ISSUE": "retailer_dissatisfaction",
-    "PRICING_AND_MARGIN_CONFLICT": "pricing_conflict",
-    "COMPETITOR_MARKET_PRESSURE": "competitor_pressure",
-    "DEMAND_SURGE": "demand_spike",
-}
-
-SUPPORTED_CATEGORIES: List[str] = list(CATEGORY_MAP.values())
-
-# Reverse mapping: normalized label -> display name
-CATEGORY_DISPLAY_NAMES: Dict[str, str] = {
-    "supply_chain_delay": "Supply Chain Delay",
-    "retailer_dissatisfaction": "Retailer Dissatisfaction",
-    "pricing_conflict": "Pricing Conflict",
-    "competitor_pressure": "Competitor Pressure",
-    "demand_spike": "Demand Spike",
-}
-
-
 @dataclass(frozen=True)
 class AppConfig:
     """Application configuration loaded from environment variables.
 
-    Attributes:
-        dataset_path: Absolute path to the source Excel dataset.
-        ollama_base_url: Ollama server URL.
-        model_name: Ollama model name (e.g., 'gemma:2b').
-        ollama_timeout: Timeout in seconds for Ollama API calls.
-        api_host: FastAPI bind address.
-        api_port: FastAPI listen port.
-        api_base_url: Full base URL for API.
-        streamlit_port: Streamlit dashboard port.
-        mlflow_tracking_uri: MLflow tracking backend URI.
-        mlflow_experiment_name: MLflow experiment name.
-        model_dir: Directory for saved model artifacts.
-        vectorizer_path: Path to saved TF-IDF vectorizer.
-        classifier_path: Path to saved scikit-learn classifier.
-        label_encoder_path: Path to saved label encoder.
-        test_size: Fraction of data reserved for testing.
-        random_seed: Random seed for reproducibility.
-        n_estimators: Number of trees in the ensemble classifier.
-        max_features: Maximum number of TF-IDF features.
-        log_level: Python logging level string.
+    All defaults are sourced from app.core.constants to maintain
+    a single source of truth for default values.
     """
 
     # --- Dataset ---
@@ -74,25 +48,39 @@ class AppConfig:
 
     # --- Ollama ---
     ollama_base_url: str = field(default_factory=lambda: os.getenv(
-        "OLLAMA_BASE_URL", "http://localhost:11434",
+        "OLLAMA_BASE_URL", DEFAULT_OLLAMA_BASE_URL,
     ))
     model_name: str = field(default_factory=lambda: os.getenv(
-        "MODEL_NAME", "gemma:2b",
+        "MODEL_NAME", DEFAULT_MODEL_NAME,
     ))
     ollama_timeout: int = field(default_factory=lambda: int(os.getenv(
-        "OLLAMA_TIMEOUT", "120",
+        "OLLAMA_TIMEOUT", str(DEFAULT_OLLAMA_TIMEOUT),
     )))
 
     # --- API ---
-    api_host: str = field(default_factory=lambda: os.getenv("API_HOST", "0.0.0.0"))
-    api_port: int = field(default_factory=lambda: int(os.getenv("API_PORT", "8000")))
+    api_host: str = field(default_factory=lambda: os.getenv(
+        "API_HOST", DEFAULT_API_HOST,
+    ))
+    api_port: int = field(default_factory=lambda: int(os.getenv(
+        "API_PORT", str(DEFAULT_API_PORT),
+    )))
     api_base_url: str = field(default_factory=lambda: os.getenv(
-        "API_BASE_URL", "http://localhost:8000",
+        "API_BASE_URL", f"http://localhost:{DEFAULT_API_PORT}",
+    ))
+
+    # --- Rate Limiting ---
+    rate_limit_rpm: int = field(default_factory=lambda: int(os.getenv(
+        "RATE_LIMIT_RPM", str(DEFAULT_RATE_LIMIT_RPM),
+    )))
+
+    # --- CORS ---
+    cors_origins: str = field(default_factory=lambda: os.getenv(
+        "CORS_ORIGINS", DEFAULT_CORS_ORIGINS,
     ))
 
     # --- Streamlit ---
     streamlit_port: int = field(default_factory=lambda: int(os.getenv(
-        "STREAMLIT_PORT", "8501",
+        "STREAMLIT_PORT", str(DEFAULT_STREAMLIT_PORT),
     )))
 
     # --- MLflow ---
@@ -119,16 +107,16 @@ class AppConfig:
 
     # --- Training ---
     test_size: float = field(default_factory=lambda: float(os.getenv(
-        "TEST_SIZE", "0.2",
+        "TEST_SIZE", str(DEFAULT_TEST_SIZE),
     )))
     random_seed: int = field(default_factory=lambda: int(os.getenv(
-        "RANDOM_SEED", "42",
+        "RANDOM_SEED", str(DEFAULT_RANDOM_SEED),
     )))
     n_estimators: int = field(default_factory=lambda: int(os.getenv(
-        "N_ESTIMATORS", "200",
+        "N_ESTIMATORS", str(DEFAULT_N_ESTIMATORS),
     )))
     max_features: int = field(default_factory=lambda: int(os.getenv(
-        "MAX_FEATURES", "5000",
+        "MAX_FEATURES", str(DEFAULT_MAX_FEATURES),
     )))
 
     # --- Logging ---
@@ -151,6 +139,25 @@ class AppConfig:
         "QLORA_BATCH_SIZE", "4",
     )))
 
+    @property
+    def cors_origin_list(self) -> list:
+        """Parse CORS origins string into a list of stripped values."""
+        return [o.strip() for o in self.cors_origins.split(",") if o.strip()]
 
+# --- Category Normalization Map ---
+CATEGORY_MAP = {
+    "SUPPLY_CHAIN_ISSUE": "supply_chain_delay",
+    "RETAILER_RELATIONSHIP_ISSUE": "retailer_dissatisfaction",
+    "PRICING_AND_MARGIN_CONFLICT": "pricing_conflict",
+    "COMPETITOR_MARKET_PRESSURE": "competitor_pressure",
+    "DEMAND_SURGE": "demand_spike",
+}
+SUPPORTED_CATEGORIES = [
+    "supply_chain_delay",
+    "retailer_dissatisfaction",
+    "pricing_conflict",
+    "competitor_pressure",
+    "demand_spike",
+]
 # Singleton config instance imported throughout the application
 config = AppConfig()

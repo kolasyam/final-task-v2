@@ -1,12 +1,9 @@
-"""Prediction service with tiered inference.
+"""Prediction service with tiered inference orchestration.
 
 Model priority:
-  1. Prompt-engineered Ollama model (gemma-sales-intel via Modelfile) — best accuracy
-  2. Base Ollama model (gemma:2b) — good zero-shot accuracy
+  1. Prompt-engineered Ollama model (gemma-sales-intel via Modelfile)
+  2. Base Ollama model (gemma:2b) — zero-shot
   3. scikit-learn TF-IDF + RandomForest — fast local fallback
-
-Note: The prompt-engineered model uses an Ollama Modelfile with embedded
-few-shot examples. For true parameter fine-tuning, use QLoRA training.
 """
 
 import logging
@@ -15,15 +12,25 @@ from typing import Any, Dict, Optional, Tuple
 
 import numpy as np
 
-from app.config import SUPPORTED_CATEGORIES, config
-from app.services.ollama_client import (
-    PROMPT_MODEL_NAME,
-    OllamaClient,
+from app.config import config
+from app.core.constants import InferenceMethod, SUPPORTED_CATEGORIES
+from app.core.exceptions import (
+    EmptyInputError,
+    ModelNotFoundError,
+    NoInferenceBackendError,
+    PredictionError,
 )
+from app.services.ollama_client import PROMPT_MODEL_NAME, OllamaClient
 from app.services.preprocessing import TextPreprocessor
 from app.services.storage import PredictionStorage
 
 logger = logging.getLogger(__name__)
+
+# Confidence thresholds based on output clarity
+_EXACT_MATCH_CONFIDENCE: float = 0.95
+_SPACE_NORMALIZED_CONFIDENCE: float = 0.85
+_SUBSTRING_MATCH_CONFIDENCE: float = 0.75
+_FUZZY_MATCH_CONFIDENCE: float = 0.60
 
 
 class SklearnClassifier:
@@ -31,38 +38,41 @@ class SklearnClassifier:
 
     Provides fast local classification as the final fallback when
     no Ollama backend is available.
+
+    Attributes:
+        _vectorizer: Fitted TF-IDF vectorizer.
+        _classifier: Trained RandomForest classifier.
+        _label_encoder: Fitted label encoder.
     """
 
     def __init__(self) -> None:
         """Initialize the sklearn classifier, loading persisted artifacts."""
-        self._vectorizer = self._load_artifact(config.vectorizer_path)
-        self._classifier = self._load_artifact(config.classifier_path)
-        self._label_encoder = self._load_artifact(config.label_encoder_path)
+        self._vectorizer: Any = self._load_artifact(config.vectorizer_path, "vectorizer")
+        self._classifier: Any = self._load_artifact(config.classifier_path, "classifier")
+        self._label_encoder: Any = self._load_artifact(config.label_encoder_path, "label encoder")
         logger.info("SklearnClassifier initialized (artifacts loaded)")
 
     @staticmethod
-    def _load_artifact(path: str) -> Any:
+    def _load_artifact(path: str, artifact_name: str = "artifact") -> Any:
         """Load a persisted artifact from disk.
 
         Args:
             path: Filesystem path to the joblib artifact.
+            artifact_name: Human-readable name for error messages.
 
         Returns:
             The deserialized artifact.
 
         Raises:
-            FileNotFoundError: If the artifact does not exist.
+            ModelNotFoundError: If the artifact file does not exist.
         """
         import joblib
         from pathlib import Path
 
         if not Path(path).exists():
-            raise FileNotFoundError(
-                f"Model artifact not found at '{path}'. "
-                f"Run training: python -m training.train",
-            )
-        artifact = joblib.load(path)
-        logger.info("Loaded artifact from %s", path)
+            raise ModelNotFoundError(path, artifact_name)
+        artifact: Any = joblib.load(path)
+        logger.info("Loaded %s from %s", artifact_name, path)
         return artifact
 
     def predict(self, text: str) -> Tuple[str, float]:
@@ -74,11 +84,11 @@ class SklearnClassifier:
         Returns:
             Tuple of (predicted_category, confidence_score).
         """
-        features = self._vectorizer.transform([text])
-        prediction = self._classifier.predict(features)
-        category = self._label_encoder.inverse_transform(prediction)[0]
-        proba = self._classifier.predict_proba(features)[0]
-        confidence = float(np.max(proba))
+        features: Any = self._vectorizer.transform([text])
+        prediction: Any = self._classifier.predict(features)
+        category: str = self._label_encoder.inverse_transform(prediction)[0]
+        proba: np.ndarray = self._classifier.predict_proba(features)[0]
+        confidence: float = float(np.max(proba))
 
         logger.info("Sklearn prediction: '%s' (confidence=%.3f)", category, confidence)
         return category, confidence
@@ -91,46 +101,41 @@ class SalesNotePredictor:
         1. Prompt-engineered Ollama model (gemma-sales-intel via Modelfile)
         2. Base Ollama model (gemma:2b) — zero-shot
         3. scikit-learn TF-IDF + RandomForest — fast fallback
-
-    For true parameter-efficient fine-tuning, use QLoRA training
-    (training/finetune_qlora.py) instead of the Modelfile approach.
-
-    Attributes:
-        ollama_client: Client for Ollama LLM inference.
-        ollama_available: Whether any Ollama backend is reachable.
-        is_prompt_model: Whether the prompt-engineered model is being used.
-        sklearn_classifier: Fallback sklearn classifier.
-        preprocessing: Text preprocessing pipeline.
-        storage: Prediction logging service.
     """
 
     def __init__(self) -> None:
         """Initialize the predictor, probing Ollama availability."""
-        self.preprocessor = TextPreprocessor()
-        self.storage = PredictionStorage()
-        self.ollama_client = OllamaClient()
+        self.preprocessor: TextPreprocessor = TextPreprocessor()
+        self.storage: PredictionStorage = PredictionStorage()
+        self.ollama_client: OllamaClient = OllamaClient()
         self.sklearn_classifier: Optional[SklearnClassifier] = None
 
         self.ollama_available: bool = self.ollama_client.health_check()
         self.is_prompt_model: bool = self.ollama_client.is_prompt_model
 
+        self._log_initialization_status()
+        self._load_sklearn_fallback()
+
+    def _log_initialization_status(self) -> None:
+        """Log the initialization status of inference backends."""
         if self.ollama_available:
             if self.is_prompt_model:
-                logger.info("✅ Using prompt-engineered model: gemma-sales-intel")
+                logger.info("Using prompt-engineered model: gemma-sales-intel")
             else:
-                logger.info("ℹ️  Using base model: gemma:2b (fine-tune for better accuracy)")
+                logger.info("Using base model: gemma:2b")
         else:
-            logger.warning("Ollama not available — using sklearn fallback")
-
-        self._load_sklearn_fallback()
+            logger.warning("Ollama not available — will use sklearn fallback if available")
 
     def _load_sklearn_fallback(self) -> None:
         """Attempt to load the sklearn fallback classifier."""
         try:
             self.sklearn_classifier = SklearnClassifier()
             logger.info("Sklearn fallback classifier loaded")
-        except FileNotFoundError as exc:
+        except ModelNotFoundError as exc:
             logger.warning("Sklearn fallback not available: %s", exc)
+            self.sklearn_classifier = None
+        except Exception as exc:
+            logger.warning("Unexpected error loading sklearn fallback: %s", exc)
             self.sklearn_classifier = None
 
     def predict(self, note: str) -> Dict[str, Any]:
@@ -141,30 +146,20 @@ class SalesNotePredictor:
 
         Returns:
             Dictionary with keys:
-                - issue_category (str): Predicted category.
-                - confidence (float): Prediction confidence (0.0 to 1.0).
-                - method (str): 'ollama_finetuned', 'ollama_base', or 'sklearn_tfidf'.
-                - latency_seconds (str): Inference time.
-                - reasoning (str): Human-readable reasoning.
+                - issue_category: Predicted category string.
+                - confidence: Prediction confidence (0.0 to 1.0).
+                - method: Inference method identifier.
+                - latency_seconds: Inference time as formatted string.
+                - reasoning: Human-readable explanation.
 
         Raises:
-            ValueError: If the note is empty or whitespace.
-            RuntimeError: If no inference backend is available.
+            EmptyInputError: If the note is empty or whitespace.
+            NoInferenceBackendError: If no backend is available.
         """
-        if not note or not note.strip():
-            raise ValueError("Note cannot be empty")
+        self._validate_input(note)
 
         cleaned_note: str = self.preprocessor.preprocess(note)
-
-        if self.ollama_available:
-            result = self._predict_ollama(cleaned_note)
-        elif self.sklearn_classifier is not None:
-            result = self._predict_sklearn(cleaned_note)
-        else:
-            raise RuntimeError(
-                "No inference backend available. "
-                f"Start Ollama or run: python -m training.train"
-            )
+        result: Dict[str, Any] = self._execute_inference(cleaned_note)
 
         self.storage.save_prediction(
             input_note=note,
@@ -172,8 +167,42 @@ class SalesNotePredictor:
         )
         return result
 
+    @staticmethod
+    def _validate_input(note: str) -> None:
+        """Validate the input note.
+
+        Args:
+            note: Input text to validate.
+
+        Raises:
+            EmptyInputError: If the note is empty or whitespace.
+        """
+        if not note or not note.strip():
+            raise EmptyInputError("Note")
+
+    def _execute_inference(self, cleaned_note: str) -> Dict[str, Any]:
+        """Execute inference using the best available backend.
+
+        Args:
+            cleaned_note: Preprocessed note text.
+
+        Returns:
+            Prediction result dictionary.
+
+        Raises:
+            NoInferenceBackendError: If no backend is available.
+        """
+        if self.ollama_available:
+            return self._predict_ollama(cleaned_note)
+        if self.sklearn_classifier is not None:
+            return self._predict_sklearn(cleaned_note)
+        raise NoInferenceBackendError()
+
     def _predict_ollama(self, cleaned_note: str) -> Dict[str, Any]:
         """Classify via Ollama (fine-tuned or base model).
+
+        If Ollama returns an unparseable result, falls back to sklearn
+        if available.
 
         Args:
             cleaned_note: Preprocessed sales note text.
@@ -181,26 +210,37 @@ class SalesNotePredictor:
         Returns:
             Prediction result dictionary.
         """
-        start_time = time.time()
+        start_time: float = time.time()
+        raw_output: str
+        ollama_elapsed: float
         raw_output, ollama_elapsed = self.ollama_client.classify_note(cleaned_note)
-        category = self.ollama_client.extract_category(raw_output)
+        category: Optional[str] = self.ollama_client.extract_category(raw_output)
 
         if category is None:
-            logger.warning("Ollama returned unparseable: '%s'. Falling back.", raw_output)
+            logger.warning("Ollama returned unparseable: '%s'. Attempting fallback.", raw_output)
             if self.sklearn_classifier is not None:
                 return self._predict_sklearn(cleaned_note)
+            logger.warning("No fallback available. Using first supported category.")
             category = SUPPORTED_CATEGORIES[0]
 
-        total_elapsed = time.time() - start_time
-        confidence = self._estimate_confidence(raw_output, category)
+        total_elapsed: float = time.time() - start_time
+        confidence: float = self._estimate_confidence(raw_output, category)
 
-        method = "ollama_prompt_model" if self.is_prompt_model else "ollama_base"
-        model_label = PROMPT_MODEL_NAME if self.is_prompt_model else self.ollama_client.base_model_name
+        method: InferenceMethod = (
+            InferenceMethod.OLLAMA_PROMPT_MODEL
+            if self.is_prompt_model
+            else InferenceMethod.OLLAMA_BASE
+        )
+        model_label: str = (
+            PROMPT_MODEL_NAME
+            if self.is_prompt_model
+            else self.ollama_client.base_model_name
+        )
 
         return {
             "issue_category": category,
             "confidence": confidence,
-            "method": method,
+            "method": method.value,
             "latency_seconds": f"{total_elapsed:.2f}",
             "reasoning": (
                 f"{model_label} classified the note as '{category}' "
@@ -217,14 +257,16 @@ class SalesNotePredictor:
         Returns:
             Prediction result dictionary.
         """
-        start_time = time.time()
+        start_time: float = time.time()
+        category: str
+        confidence: float
         category, confidence = self.sklearn_classifier.predict(cleaned_note)
-        elapsed = time.time() - start_time
+        elapsed: float = time.time() - start_time
 
         return {
             "issue_category": category,
             "confidence": confidence,
-            "method": "sklearn_tfidf",
+            "method": InferenceMethod.SKLEARN_TFIDF.value,
             "latency_seconds": f"{elapsed:.4f}",
             "reasoning": (
                 f"TF-IDF + RandomForest classified as '{category}' "
@@ -236,6 +278,12 @@ class SalesNotePredictor:
     def _estimate_confidence(raw_output: str, category: str) -> float:
         """Estimate confidence from Ollama output clarity.
 
+        Uses heuristics based on how cleanly the category was extracted:
+          - Exact match: highest confidence
+          - Space-normalized match (underscores replaced with spaces)
+          - Substring match (category found within output)
+          - Fuzzy match (keyword-based): lowest confidence
+
         Args:
             raw_output: Raw model output string.
             category: Extracted category name.
@@ -243,14 +291,15 @@ class SalesNotePredictor:
         Returns:
             Confidence score between 0.0 and 1.0.
         """
-        cleaned = raw_output.lower().strip()
+        cleaned: str = raw_output.lower().strip()
+
         if cleaned == category:
-            return 0.95
+            return _EXACT_MATCH_CONFIDENCE
         if category.replace("_", " ") in cleaned:
-            return 0.85
+            return _SPACE_NORMALIZED_CONFIDENCE
         if category in cleaned:
-            return 0.75
-        return 0.60
+            return _SUBSTRING_MATCH_CONFIDENCE
+        return _FUZZY_MATCH_CONFIDENCE
 
     def get_status(self) -> Dict[str, Any]:
         """Get the current status of all inference backends.

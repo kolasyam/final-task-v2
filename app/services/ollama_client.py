@@ -11,32 +11,49 @@ Supports three model tiers:
 
 import logging
 import time
-from typing import Any, Dict, Optional, Tuple
+from typing import Any, Dict, FrozenSet, Optional, Tuple
 
 import requests
 
-from app.config import SUPPORTED_CATEGORIES, config
+from app.config import config
+from app.core.constants import (
+    CATEGORY_KEYWORDS,
+    CATEGORY_PREFIXES_TO_STRIP,
+    CLASSIFICATION_PROMPT,
+    OLLAMA_MAX_TOKENS,
+    OLLAMA_TEMPERATURE,
+    OLLAMA_TOP_P,
+    PROMPT_MODEL_NAME,
+    SUPPORTED_CATEGORIES,
+    SUPPORTED_CATEGORIES_SET,
+    DEFAULT_MAX_RETRIES,
+    DEFAULT_RETRY_BASE_DELAY,
+    DEFAULT_RETRY_MAX_DELAY,
+    DEFAULT_RETRY_BACKOFF_FACTOR,
+)
+from app.core.exceptions import (
+    CategoryExtractionError,
+    OllamaConnectionError,
+    OllamaTimeoutError,
+)
 
 logger = logging.getLogger(__name__)
 
-# Name of the fine-tuned model created by training.generate_modelfile
-PROMPT_MODEL_NAME: str = "gemma-sales-intel"
 
-# Classification prompt — used with the base gemma:2b model.
-# The fine-tuned model has this baked into its system prompt.
-CLASSIFICATION_PROMPT: str = (
-    "You are a sales intelligence analyst. Classify the following "
-    "sales representative field note into exactly ONE of these categories:\n\n"
-    "1. supply_chain_delay — stock shortages, delivery delays, replenishment issues\n"
-    "2. retailer_dissatisfaction — complaints, unhappy retailers, service issues\n"
-    "3. pricing_conflict — price disputes, margin concerns, discount conflicts\n"
-    "4. competitor_pressure — competitor actions, market share threats, rival offers\n"
-    "5. demand_spike — unexpected demand surges, stockout from high volume\n\n"
-    "Sales Note: {note}\n\n"
-    "Respond with ONLY the category name (e.g., supply_chain_delay). "
-    "No explanation, no extra text.\n"
-    "Category:"
-)
+class RetryConfig:
+    """Configuration for retry behavior."""
+
+    def __init__(
+        self,
+        max_retries: int = DEFAULT_MAX_RETRIES,
+        base_delay: float = DEFAULT_RETRY_BASE_DELAY,
+        max_delay: float = DEFAULT_RETRY_MAX_DELAY,
+        backoff_factor: float = DEFAULT_RETRY_BACKOFF_FACTOR,
+    ) -> None:
+        self.max_retries: int = max_retries
+        self.base_delay: float = base_delay
+        self.max_delay: float = max_delay
+        self.backoff_factor: float = backoff_factor
 
 
 class OllamaClient:
@@ -45,6 +62,8 @@ class OllamaClient:
     Sends prompts to the Ollama REST API and returns generated text.
     Automatically detects and uses the fine-tuned 'gemma-sales-intel'
     model if available, otherwise falls back to base 'gemma:2b'.
+
+    Includes retry logic with exponential backoff for transient failures.
     """
 
     def __init__(
@@ -52,6 +71,7 @@ class OllamaClient:
         base_url: Optional[str] = None,
         model_name: Optional[str] = None,
         timeout: Optional[int] = None,
+        retry_config: Optional[RetryConfig] = None,
     ) -> None:
         """Initialize the Ollama client.
 
@@ -59,15 +79,17 @@ class OllamaClient:
             base_url: Ollama server URL. Defaults to config or localhost:11434.
             model_name: Model to use. Defaults to config or 'gemma:2b'.
             timeout: Request timeout in seconds. Defaults to config or 120.
+            retry_config: Retry configuration. Uses defaults if not specified.
         """
-        self.base_url = (base_url or config.ollama_base_url).rstrip("/")
-        self.base_model_name = model_name or config.model_name
-        self.timeout = timeout or config.ollama_timeout
-        self._generate_url = f"{self.base_url}/api/generate"
+        self.base_url: str = (base_url or config.ollama_base_url).rstrip("/")
+        self.base_model_name: str = model_name or config.model_name
+        self.timeout: int = timeout or config.ollama_timeout
+        self.retry_config: RetryConfig = retry_config or RetryConfig()
+        self._generate_url: str = f"{self.base_url}/api/generate"
 
         # Detect which model to use: prompt-engineered or base
-        self.model_name = self._detect_best_model()
-        self.is_prompt_model = self.model_name == PROMPT_MODEL_NAME
+        self.model_name: str = self._detect_best_model()
+        self.is_prompt_model: bool = self.model_name == PROMPT_MODEL_NAME
 
         logger.info(
             "OllamaClient initialized (url=%s, model=%s, prompt_model=%s, timeout=%ds)",
@@ -86,7 +108,7 @@ class OllamaClient:
         Returns:
             Model name string to use for inference.
         """
-        available = self._list_models()
+        available: list = self._list_models()
 
         if PROMPT_MODEL_NAME in available:
             logger.info("Prompt-engineered model '%s' detected — using it", PROMPT_MODEL_NAME)
@@ -111,7 +133,9 @@ class OllamaClient:
             List of model name strings.
         """
         try:
-            response = requests.get(f"{self.base_url}/api/tags", timeout=5)
+            response = requests.get(
+                f"{self.base_url}/api/tags", timeout=5,
+            )
             if response.status_code == 200:
                 return [m.get("name", "") for m in response.json().get("models", [])]
         except requests.exceptions.RequestException as exc:
@@ -130,17 +154,19 @@ class OllamaClient:
                 logger.error("Ollama server returned status %d", response.status_code)
                 return False
 
-            available = self._list_models()
+            available: list = self._list_models()
             if self.model_name in available:
                 logger.info(
                     "Ollama health check passed (model=%s, finetuned=%s)",
-                    self.model_name, self.is_prompt_model,
+                    self.model_name,
+                    self.is_prompt_model,
                 )
                 return True
 
             logger.warning(
                 "Model '%s' not found. Available: %s",
-                self.model_name, available,
+                self.model_name,
+                available,
             )
             return False
         except requests.exceptions.RequestException as exc:
@@ -148,9 +174,9 @@ class OllamaClient:
             return False
 
     def generate(
-        self, prompt: str, max_tokens: int = 30,
+        self, prompt: str, max_tokens: int = OLLAMA_MAX_TOKENS,
     ) -> Tuple[str, float]:
-        """Send a prompt to Ollama and return the generated text.
+        """Send a prompt to Ollama with retry logic and exponential backoff.
 
         Args:
             prompt: The full prompt to send.
@@ -160,21 +186,68 @@ class OllamaClient:
             Tuple of (generated_text, elapsed_seconds).
 
         Raises:
-            RuntimeError: If the Ollama server is unreachable or returns an error.
+            OllamaConnectionError: If the server is unreachable after retries.
+            OllamaTimeoutError: If the request times out after retries.
         """
         payload: Dict[str, Any] = {
             "model": self.model_name,
             "prompt": prompt,
             "stream": False,
             "options": {
-                "temperature": 0.1,
-                "top_p": 0.9,
+                "temperature": OLLAMA_TEMPERATURE,
+                "top_p": OLLAMA_TOP_P,
                 "num_predict": max_tokens,
             },
         }
 
+        last_exception: Optional[Exception] = None
+        retry_config: RetryConfig = self.retry_config
+
+        for attempt in range(retry_config.max_retries + 1):
+            if attempt > 0:
+                delay: float = min(
+                    retry_config.base_delay * (retry_config.backoff_factor ** (attempt - 1)),
+                    retry_config.max_delay,
+                )
+                logger.info("Retry attempt %d/%d after %.1fs delay", attempt, retry_config.max_retries, delay)
+                time.sleep(delay)
+
+            try:
+                return self._execute_generate(payload, prompt)
+            except (OllamaConnectionError, OllamaTimeoutError) as exc:
+                last_exception = exc
+                logger.warning(
+                    "Ollama request failed (attempt %d/%d): %s",
+                    attempt + 1,
+                    retry_config.max_retries + 1,
+                    exc,
+                )
+            except RuntimeError:
+                raise
+
+        # All retries exhausted
+        logger.error("All %d retry attempts exhausted for Ollama request", retry_config.max_retries + 1)
+        raise last_exception  # type: ignore[misc]
+
+    def _execute_generate(
+        self, payload: Dict[str, Any], prompt: str,
+    ) -> Tuple[str, float]:
+        """Execute a single generate request to Ollama.
+
+        Args:
+            payload: JSON payload for the request.
+            prompt: The original prompt (for logging).
+
+        Returns:
+            Tuple of (generated_text, elapsed_seconds).
+
+        Raises:
+            OllamaConnectionError: On connection failure.
+            OllamaTimeoutError: On timeout.
+            RuntimeError: On other request failures.
+        """
         logger.debug("Sending prompt to Ollama (model=%s)", self.model_name)
-        start_time = time.time()
+        start_time: float = time.time()
 
         try:
             response = requests.post(
@@ -183,21 +256,15 @@ class OllamaClient:
                 timeout=self.timeout,
             )
             response.raise_for_status()
-            elapsed = time.time() - start_time
-            result = response.json()
+            elapsed: float = time.time() - start_time
+            result: Dict[str, Any] = response.json()
             generated_text: str = result.get("response", "").strip()
             logger.debug("Ollama response in %.2fs: '%s'", elapsed, generated_text)
             return generated_text, elapsed
         except requests.exceptions.ConnectionError as exc:
-            raise RuntimeError(
-                f"Cannot connect to Ollama at {self.base_url}. "
-                f"Ensure Ollama is running: 'ollama serve'",
-            ) from exc
+            raise OllamaConnectionError(self.base_url) from exc
         except requests.exceptions.Timeout as exc:
-            raise RuntimeError(
-                f"Ollama request timed out after {self.timeout}s. "
-                f"The model may still be loading.",
-            ) from exc
+            raise OllamaTimeoutError(self.timeout) from exc
         except requests.exceptions.RequestException as exc:
             raise RuntimeError(f"Ollama request failed: {exc}") from exc
 
@@ -214,21 +281,30 @@ class OllamaClient:
         Returns:
             Tuple of (raw_category_string, elapsed_seconds).
         """
-        if self.is_prompt_model:
-            # Prompt-engineered model already has the system prompt
-            prompt = f"Classify this sales note: {note}\nCategory:"
-        else:
-            # Base model needs the full prompt
-            prompt = CLASSIFICATION_PROMPT.format(note=note)
+        prompt: str = self._build_classification_prompt(note)
+        return self.generate(prompt, max_tokens=OLLAMA_MAX_TOKENS)
 
-        return self.generate(prompt, max_tokens=30)
+    def _build_classification_prompt(self, note: str) -> str:
+        """Build the classification prompt based on model type.
+
+        Args:
+            note: Preprocessed sales note text.
+
+        Returns:
+            Formatted prompt string.
+        """
+        if self.is_prompt_model:
+            return f"Classify this sales note: {note}\nCategory:"
+        return CLASSIFICATION_PROMPT.format(note=note)
 
     @staticmethod
     def extract_category(raw_output: str) -> Optional[str]:
         """Extract a valid category from raw model output.
 
-        Attempts direct matching, substring matching, and keyword-based
-        fallback in that order.
+        Uses a three-tier matching strategy:
+          1. Direct match against supported categories
+          2. Substring match (handling formatting variations)
+          3. Keyword-based fuzzy match using CATEGORY_KEYWORDS
 
         Args:
             raw_output: Raw string output from the model.
@@ -236,68 +312,81 @@ class OllamaClient:
         Returns:
             A valid category string, or None if no match found.
         """
-        cleaned: str = raw_output.lower().strip().rstrip(".!?\n")
-
-        # Remove common prefixes
-        for prefix in [
-            "issue category:",
-            "category:",
-            "the issue category is",
-            "the category is",
-            "-",
-        ]:
-            if cleaned.startswith(prefix):
-                cleaned = cleaned[len(prefix):].strip()
+        cleaned: str = OllamaClient._clean_raw_output(raw_output)
 
         # Direct match
-        if cleaned in SUPPORTED_CATEGORIES:
+        if cleaned in SUPPORTED_CATEGORIES_SET:
             return cleaned
 
         # Substring match
+        category: Optional[str] = OllamaClient._substring_match(cleaned)
+        if category is not None:
+            return category
+
+        # Keyword-based fuzzy match
+        return OllamaClient._keyword_match(cleaned)
+
+    @staticmethod
+    def _clean_raw_output(raw_output: str) -> str:
+        """Clean raw model output by lowercasing and stripping prefixes.
+
+        Args:
+            raw_output: Raw model output.
+
+        Returns:
+            Cleaned and normalized string.
+        """
+        cleaned: str = raw_output.lower().strip().rstrip(".!?\n")
+        for prefix in CATEGORY_PREFIXES_TO_STRIP:
+            if cleaned.startswith(prefix):
+                cleaned = cleaned[len(prefix):].strip()
+        return cleaned
+
+    @staticmethod
+    def _substring_match(cleaned: str) -> Optional[str]:
+        """Attempt substring matching against supported categories.
+
+        Args:
+            cleaned: Pre-cleaned output string.
+
+        Returns:
+            Matching category or None.
+        """
         for category in SUPPORTED_CATEGORIES:
             if category in cleaned:
                 return category
+        return None
 
-        # Keyword-based fallback
-        keyword_map: Dict[str, str] = {
-            "supply_chain_delay": (
-                "supply chain delay supply chain stock shortage delivery "
-                "delay replenish shipment backlog warehouse inventory mismatch "
-                "running out fast movers stock movement"
-            ),
-            "retailer_dissatisfaction": (
-                "retailer dissatisfaction unhappy complain angry "
-                "frustrated poor service bad experience relationship issue "
-                "dissatisfied"
-            ),
-            "pricing_conflict": (
-                "pricing conflict price dispute margin discount "
-                "expensive cheap billing charge rate cost conflict"
-            ),
-            "competitor_pressure": (
-                "competitor pressure competition rival alternative "
-                "switching market share competitor launched campaign"
-            ),
-            "demand_spike": (
-                "demand spike surge overflow high volume rush "
-                "stockout demand surge unexpected demand high demand"
-            ),
-        }
+    @staticmethod
+    def _keyword_match(cleaned: str) -> Optional[str]:
+        """Attempt keyword-based fuzzy matching.
 
+        Uses the CATEGORY_KEYWORDS lookup table from constants.
+        Scores each category by keyword overlap with the cleaned output.
+
+        Args:
+            cleaned: Pre-cleaned output string.
+
+        Returns:
+            Best-matching category or None if no keywords match.
+        """
         best_category: Optional[str] = None
         best_score: int = 0
-        for category, keywords in keyword_map.items():
-            score: int = sum(1 for kw in keywords.split() if kw in cleaned)
+        cleaned_words: FrozenSet[str] = frozenset(cleaned.split())
+
+        for category, keywords in CATEGORY_KEYWORDS.items():
+            score: int = len(cleaned_words & keywords)
             if score > best_score:
                 best_score = score
                 best_category = category
 
-        if best_category and best_score > 0:
+        if best_category is not None and best_score > 0:
             logger.warning(
                 "Fuzzy matched '%s' to '%s' (score=%d)",
-                raw_output, best_category, best_score,
+                cleaned,
+                best_category,
+                best_score,
             )
             return best_category
 
-        logger.warning("Could not extract category from: '%s'", raw_output)
         return None

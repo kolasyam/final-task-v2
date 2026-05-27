@@ -4,9 +4,17 @@ All schemas enforce strict input validation and provide clear
 documentation for the OpenAPI/Swagger interface.
 """
 
-from typing import List, Optional
+from typing import Dict, List
 
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, ConfigDict, Field, field_validator
+
+from app.core.constants import (
+    CATEGORY_DISPLAY_NAMES,
+    MAX_BATCH_SIZE,
+    MAX_NOTE_LENGTH,
+    MIN_NOTE_LENGTH,
+    SUPPORTED_CATEGORIES,
+)
 
 
 class PredictionRequest(BaseModel):
@@ -18,8 +26,8 @@ class PredictionRequest(BaseModel):
 
     rep_note: str = Field(
         ...,
-        min_length=1,
-        max_length=1000,
+        min_length=MIN_NOTE_LENGTH,
+        max_length=MAX_NOTE_LENGTH,
         description="Sales representative note to classify",
         examples=[
             "Retailer reported stock running out of fast movers, "
@@ -38,7 +46,7 @@ class BatchPredictionRequest(BaseModel):
     notes: List[str] = Field(
         ...,
         min_length=1,
-        max_length=50,
+        max_length=MAX_BATCH_SIZE,
         description="List of sales representative notes to classify",
     )
 
@@ -53,12 +61,25 @@ class BatchPredictionRequest(BaseModel):
         },
     )
 
+    @field_validator("notes")
     @classmethod
     def validate_notes(cls, v: List[str]) -> List[str]:
-        """Validate individual notes in the batch."""
+        """Validate individual notes in the batch.
+
+        Args:
+            v: List of note strings.
+
+        Returns:
+            Validated list of notes.
+
+        Raises:
+            ValueError: If any note is empty or exceeds max length.
+        """
         for i, note in enumerate(v):
-            if len(note) > 1000:
-                raise ValueError(f"Note at index {i} exceeds max length of 1000 characters")
+            if len(note) > MAX_NOTE_LENGTH:
+                raise ValueError(
+                    f"Note at index {i} exceeds max length of {MAX_NOTE_LENGTH} characters"
+                )
             if not note.strip():
                 raise ValueError(f"Note at index {i} is empty or whitespace")
         return v
@@ -70,7 +91,7 @@ class PredictionResponse(BaseModel):
     Attributes:
         issue_category: The predicted issue category name.
         confidence: Prediction confidence score (0.0 to 1.0).
-        method: Inference method used (ollama_gemma2b or sklearn_tfidf).
+        method: Inference method used.
         latency_seconds: Time taken for inference.
         reasoning: Human-readable explanation of the prediction.
     """
@@ -157,6 +178,20 @@ class CategoriesResponse(BaseModel):
     categories: List[str] = Field(
         ..., description="Supported category names",
     )
-    display_names: dict = Field(
+    display_names: Dict[str, str] = Field(
         ..., description="Category display name mapping",
     )
+
+
+class ErrorResponse(BaseModel):
+    """Schema for error responses.
+
+    Attributes:
+        error_code: Machine-readable error identifier.
+        message: Human-readable error message.
+        details: Additional error context (optional).
+    """
+
+    error_code: str = Field(..., description="Machine-readable error code")
+    message: str = Field(..., description="Human-readable error message")
+    details: Dict = Field(default_factory=dict, description="Additional error context")

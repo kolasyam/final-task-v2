@@ -1,141 +1,54 @@
-"""Text preprocessing service for sales representative notes."""
+"""Text preprocessing service for sales representative notes.
+
+Provides a pipeline for normalizing and cleaning raw sales notes
+before they are sent to inference backends.
+"""
 
 import logging
 import re
-from typing import Dict, List
+from typing import Dict, List, Pattern
+
+from app.core.constants import ABBREVIATION_MAP
+from app.core.exceptions import EmptyInputError
 
 logger = logging.getLogger(__name__)
 
 
 class TextPreprocessor:
-    """Preprocesses sales notes for model input."""
+    """Preprocesses sales notes for model input.
 
-    # Common sales field abbreviations mapped to full forms
-    ABBREVIATION_MAP: Dict[str, str] = {
-        "stk": "stock",
-        "nt": "not",
-        "cmng": "coming",
-        "frm": "from",
-        "dys": "days",
-        "wks": "weeks",
-        "dlvry": "delivery",
-        "dlvr": "deliver",
-        "repl": "replenishment",
-        "ret": "retailer",
-        "reps": "representative",
-        "repr": "representative",
-        "cust": "customer",
-        "custs": "customers",
-        "pr": "price",
-        "prc": "price",
-        "prblm": "problem",
-        "prblms": "problems",
-        "cmpln": "complain",
-        "cmplns": "complains",
-        "cmplng": "complaining",
-        "inc": "increase",
-        "dcr": "decrease",
-        "dmn": "demand",
-        "spk": "spike",
-        "cmptr": "competitor",
-        "cmptrs": "competitors",
-        "invntry": "inventory",
-        "invtry": "inventory",
-        "wrg": "wrong",
-        "ordr": "order",
-        "ordrs": "orders",
-        "amt": "amount",
-        "qtty": "quantity",
-        "qty": "quantity",
-        "pd": "paid",
-        "pdbl": "payable",
-        "bl": "bill",
-        "bllng": "billing",
-        "pdct": "product",
-        "pdcts": "products",
-        "dlay": "delay",
-        "dlays": "delays",
-        "dlayed": "delayed",
-        "ot": "out of",
-        "stkout": "stockout",
-        "bck": "back",
-        "bk": "back",
-        "rgnl": "regional",
-        "reg": "region",
-        "dlv": "deliver",
-        "dlvd": "delivered",
-        "shrtg": "shortage",
-        "srvc": "service",
-        "srvcng": "servicing",
-        "ups": "upsell",
-        "crs": "cross",
-        "sls": "sales",
-        "slsmn": "salesman",
-        "slsprsn": "salesperson",
-        "mkt": "market",
-        "mktng": "marketing",
-        "ftr": "feature",
-        "bnft": "benefit",
-        "whsl": "wholesale",
-        "rtlr": "retailer",
-        "rtl": "retail",
-        "mgn": "margin",
-        "mrgn": "margin",
-        "ntwk": "network",
-        "dl": "deal",
-        "dls": "deals",
-        "cntrct": "contract",
-        "cntrcts": "contracts",
-        "rqrmnt": "requirement",
-        "qlyty": "quality",
-        "qlty": "quality",
-        "std": "standard",
-        "hvy": "heavy",
-        "lgt": "light",
-        "lrg": "large",
-        "sml": "small",
-        "mk": "make",
-        "sv": "save",
-        "gv": "give",
-        "gt": "get",
-        "gl": "goal",
-        "trg": "target",
-        "trgt": "target",
-        "incntv": "incentive",
-        "rt": "rate",
-        "rtng": "rating",
-        "rvw": "review",
-        "pndng": "pending",
-        "apprv": "approve",
-        "rjct": "reject",
-        "rjctd": "rejected",
-        "apprvl": "approval",
-        "tx": "tax",
-        "wh": "warehouse",
-        "whs": "warehouse",
-        "cncl": "cancel",
-        "cnfld": "confidential",
-        "pndt": "pending",
-        "rfr": "refer",
-        "rmnd": "remind",
-        "rmndr": "reminder",
-        "shpng": "shipping",
-        "shp": "ship",
-        "rcv": "receive",
-        "rcvd": "received",
-        "snd": "send",
-        "sndng": "sending",
-        "hdqtr": "headquarters",
-        "offc": "office",
-        "dept": "department",
-        "div": "division",
-        "mgr": "manager",
-        "hod": "head",
-    }
+    Pipeline steps:
+        1. Lowercase conversion
+        2. Punctuation normalization
+        3. Abbreviation expansion
+        4. Whitespace cleanup
+
+    All patterns and mappings are sourced from app.core.constants
+    to maintain a single source of truth.
+    """
 
     def __init__(self) -> None:
-        """Initialize the preprocessor."""
+        """Initialize the preprocessor with compiled regex patterns."""
+        self._abbreviation_map: Dict[str, str] = ABBREVIATION_MAP
+        self._patterns: Dict[str, Pattern] = self._compile_patterns()
         logger.info("TextPreprocessor initialized")
+
+    @staticmethod
+    def _compile_patterns() -> Dict[str, Pattern]:
+        """Compile regex patterns for reuse across method calls.
+
+        Returns:
+            Dictionary of compiled regex patterns.
+        """
+        return {
+            "multi_exclamation": re.compile(r"[!]{2,}"),
+            "multi_question": re.compile(r"[?]{2,}"),
+            "multi_period": re.compile(r"[.]{2,}"),
+            "multi_comma": re.compile(r"[,]{2,}"),
+            "non_alphanumeric": re.compile(r"[^a-zA-Z0-9\s.,!?']"),
+            "whitespace": re.compile(r"\s+"),
+            "non_alpha": re.compile(r"[^a-zA-Z]"),
+        }
 
     def to_lower(self, text: str) -> str:
         """Convert text to lowercase.
@@ -157,10 +70,13 @@ class TextPreprocessor:
         Returns:
             Text with normalized whitespace.
         """
-        return re.sub(r"\s+", " ", text).strip()
+        return self._patterns["whitespace"].sub(" ", text).strip()
 
     def clean_punctuation(self, text: str) -> str:
         """Clean excessive punctuation while preserving meaningful characters.
+
+        Collapses repeated punctuation marks and removes special characters
+        that are not part of standard text.
 
         Args:
             text: Input text.
@@ -168,15 +84,18 @@ class TextPreprocessor:
         Returns:
             Text with cleaned punctuation.
         """
-        text = re.sub(r"[!]{2,}", "!", text)
-        text = re.sub(r"[?]{2,}", "?", text)
-        text = re.sub(r"[.]{2,}", ".", text)
-        text = re.sub(r"[,]{2,}", ",", text)
-        text = re.sub(r"[^a-zA-Z0-9\s.,!?']", "", text)
+        text = self._patterns["multi_exclamation"].sub("!", text)
+        text = self._patterns["multi_question"].sub("?", text)
+        text = self._patterns["multi_period"].sub(".", text)
+        text = self._patterns["multi_comma"].sub(",", text)
+        text = self._patterns["non_alphanumeric"].sub("", text)
         return text
 
     def normalize_typos(self, text: str) -> str:
         """Normalize common typos and abbreviations.
+
+        Uses the ABBREVIATION_MAP from app.core.constants to expand
+        sales field abbreviations to their full forms.
 
         Args:
             text: Input text.
@@ -186,12 +105,12 @@ class TextPreprocessor:
         """
         words: List[str] = text.split()
         normalized: List[str] = []
+        non_alpha: Pattern = self._patterns["non_alpha"]
+
         for word in words:
-            cleaned_word: str = re.sub(r"[^a-zA-Z]", "", word.lower())
-            if cleaned_word in self.ABBREVIATION_MAP:
-                normalized.append(self.ABBREVIATION_MAP[cleaned_word])
-            else:
-                normalized.append(word)
+            cleaned_word: str = non_alpha.sub("", word.lower())
+            normalized.append(self._abbreviation_map.get(cleaned_word, word))
+
         return " ".join(normalized)
 
     def preprocess(self, text: str) -> str:
@@ -204,10 +123,10 @@ class TextPreprocessor:
             Cleaned and normalized text ready for model input.
 
         Raises:
-            ValueError: If input text is empty or whitespace.
+            EmptyInputError: If input text is empty or whitespace.
         """
         if not text or not text.strip():
-            raise ValueError("Input text cannot be empty")
+            raise EmptyInputError("Input text")
 
         text = self.to_lower(text)
         text = self.clean_punctuation(text)

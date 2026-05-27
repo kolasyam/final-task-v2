@@ -1,17 +1,21 @@
 """Rate limiting middleware for FastAPI.
 
 Uses a simple in-memory token bucket algorithm.
-For production, use Redis-based rate limiting.
+For production deployments, replace with Redis-based rate limiting.
 """
 
 import logging
 import time
 from collections import defaultdict
-from typing import Dict, Optional
+from typing import Dict
 
 from fastapi import Request
 from starlette.middleware.base import BaseHTTPMiddleware
 from starlette.responses import JSONResponse
+
+from app.config import config
+from app.core.constants import DEFAULT_RATE_LIMIT_WINDOW_SECONDS
+from app.core.exceptions import RateLimitExceededError
 
 logger = logging.getLogger(__name__)
 
@@ -19,7 +23,7 @@ logger = logging.getLogger(__name__)
 class RateLimitMiddleware(BaseHTTPMiddleware):
     """Token bucket rate limiter.
 
-    Limits requests per client IP within a time window.
+    Limits requests per client IP within a configurable time window.
 
     Attributes:
         requests_per_minute: Maximum requests per window.
@@ -29,17 +33,17 @@ class RateLimitMiddleware(BaseHTTPMiddleware):
     def __init__(
         self,
         app,
-        requests_per_minute: int = 60,
-        window_seconds: int = 60,
+        requests_per_minute: int = config.rate_limit_rpm,
+        window_seconds: int = DEFAULT_RATE_LIMIT_WINDOW_SECONDS,
     ) -> None:
         super().__init__(app)
-        self.requests_per_minute = requests_per_minute
-        self.window_seconds = window_seconds
+        self.requests_per_minute: int = requests_per_minute
+        self.window_seconds: int = window_seconds
         self._clients: Dict[str, Dict[str, float]] = defaultdict(
             lambda: {"tokens": float(requests_per_minute), "last_refill": time.time()},
         )
 
-    async def dispatch(self, request: Request, call_next) -> None:
+    async def dispatch(self, request: Request, call_next) -> JSONResponse:
         """Process request through rate limiter.
 
         Args:
@@ -53,20 +57,17 @@ class RateLimitMiddleware(BaseHTTPMiddleware):
 
         if not self._allow_request(client_ip):
             logger.warning("Rate limit exceeded for %s", client_ip)
+            error = RateLimitExceededError(retry_after=self.window_seconds)
             return JSONResponse(
-                status_code=429,
-                content={
-                    "detail": "Too many requests. Please slow down.",
-                    "retry_after": self.window_seconds,
-                },
+                status_code=error.HTTP_STATUS,
+                content=error.to_dict(),
                 headers={"Retry-After": str(self.window_seconds)},
             )
 
-        response = await call_next(request)
-        return response
+        return await call_next(request)
 
     def _allow_request(self, client_ip: str) -> bool:
-        """Check if a request should be allowed.
+        """Check if a request should be allowed under the current rate limit.
 
         Args:
             client_ip: Client IP address.
@@ -74,19 +75,27 @@ class RateLimitMiddleware(BaseHTTPMiddleware):
         Returns:
             True if the request is allowed.
         """
-        now = time.time()
-        client = self._clients[client_ip]
+        now: float = time.time()
+        client: Dict[str, float] = self._clients[client_ip]
 
-        # Refill tokens
-        elapsed = now - client["last_refill"]
-        refill_rate = self.requests_per_minute / self.window_seconds
-        client["tokens"] = min(
-            self.requests_per_minute,
-            client["tokens"] + elapsed * refill_rate,
-        )
-        client["last_refill"] = now
+        self._refill_tokens(client, now)
 
         if client["tokens"] >= 1:
             client["tokens"] -= 1
             return True
         return False
+
+    def _refill_tokens(self, client: Dict[str, float], now: float) -> None:
+        """Refill tokens based on elapsed time.
+
+        Args:
+            client: Client state dictionary.
+            now: Current timestamp.
+        """
+        elapsed: float = now - client["last_refill"]
+        refill_rate: float = self.requests_per_minute / self.window_seconds
+        client["tokens"] = min(
+            self.requests_per_minute,
+            client["tokens"] + elapsed * refill_rate,
+        )
+        client["last_refill"] = now
