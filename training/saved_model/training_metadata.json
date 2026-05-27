@@ -1,0 +1,16 @@
+{
+  "vectorizer_path": "training/saved_model\\vectorizer.joblib",
+  "classifier_path": "training/saved_model\\classifier.joblib",
+  "label_encoder_path": "training/saved_model\\label_encoder.joblib",
+  "classes": [
+    "competitor_pressure",
+    "demand_spike",
+    "pricing_conflict",
+    "retailer_dissatisfaction",
+    "supply_chain_delay"
+  ],
+  "pipeline_steps": [
+    "tfidf",
+    "clf"
+  ]
+}

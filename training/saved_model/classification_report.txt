@@ -1,0 +1,11 @@
+                          precision    recall  f1-score   support
+
+     competitor_pressure       1.00      1.00      1.00        20
+            demand_spike       1.00      1.00      1.00        20
+        pricing_conflict       1.00      1.00      1.00        20
+retailer_dissatisfaction       1.00      1.00      1.00        20
+      supply_chain_delay       1.00      1.00      1.00        20
+
+                accuracy                           1.00       100
+               macro avg       1.00      1.00      1.00       100
+            weighted avg       1.00      1.00      1.00       100

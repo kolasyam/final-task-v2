@@ -1,0 +1,41 @@
+# Environment
+.env
+*.env
+!.env.example
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+dist/
+build/
+
+# Virtual Environment
+venv/
+.venv/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+
+# OS
+.DS_Store
+Thumbs.db
+
+# ML
+mlruns/
+artifacts/
+training/saved_model/*.bin
+training/saved_model/*.safetensors
+
+# Data
+data/*.csv
+data/*.jsonl
+!data/.gitkeep
+
+# Model outputs
+*.pt
+*.pth
+*.onnx
+*.gguf

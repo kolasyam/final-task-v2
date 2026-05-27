@@ -1,0 +1,400 @@
+{"input": "Kiran General Store reported retailer threatening to reduce orders; stock movement slowing this week. Impact visible on Regular Soap Bar.", "output": "retailer_dissatisfaction"}
+{"input": "Metro Needs reported dealer asking for extra discount; similar feedback heard from nearby outlets. Impact visible on Economy Rice Pack.", "output": "pricing_conflict"}
+{"input": "Sai Durga Mart reported retailer feels ignored; customers already asking questions. Impact visible on Mini Noodles Pack.", "output": "retailer_dissatisfaction"}
+{"input": "Fresh Basket reported retailer feels ignored; stock movement slowing this week. Impact visible on Mini Noodles Pack.", "output": "retailer_dissatisfaction"}
+{"input": "Kiran General Store reported owner upset about unresolved issue; morning sales impacted badly. Impact visible on Regular Soap Bar.", "output": "retailer_dissatisfaction"}
+{"input": "Fresh Basket reported retailer shifting shelf space; retailer sounded frustrated during discussion. Impact visible on Mini Noodles Pack.", "output": "competitor_pressure"}
+{"input": "Balaji Wholesale reported stock not received; team asked for immediate follow-up. Impact visible on Premium Biscuits.", "output": "supply_chain_delay"}
+{"input": "Sai Durga Mart reported pricing mismatch noticed; counter staff highlighted repeated occurrence. Impact visible on Family Snack Combo.", "output": "pricing_conflict"}
+{"input": "Metro Needs reported fast-moving SKU selling out quickly; store owner requested quick action. Impact visible on 1L Juice Bottle.", "output": "demand_spike"}
+{"input": "Sai Durga Mart reported retailer shifting shelf space; store comparing us with competitor supply. Impact visible on 500ml Cola Bottle.", "output": "competitor_pressure"}
+{"input": "Mahalaxmi Agencies reported delivery pushed again; retailer sounded frustrated during discussion. Impact visible on Mini Noodles Pack.", "output": "supply_chain_delay"}
+{"input": "Ganesh Provisions reported scheme calculation dispute raised; morning sales impacted badly. Impact visible on Premium Biscuits.", "output": "pricing_conflict"}
+{"input": "Annapurna Super Market reported inventory mismatch reported; retailer sounded frustrated during discussion. Impact visible on Family Snack Combo.", "output": "supply_chain_delay"}
+{"input": "Balaji Wholesale reported unexpected jump in movement; similar feedback heard from nearby outlets. Impact visible on Mini Noodles Pack.", "output": "demand_spike"}
+{"input": "Sai Durga Mart reported MRP confusion creating arguments; store comparing us with competitor supply. Impact visible on 500ml Cola Bottle.", "output": "pricing_conflict"}
+{"input": "Annapurna Super Market reported fast-moving SKU selling out quickly; team asked for immediate follow-up. Impact visible on Family Snack Combo.", "output": "demand_spike"}
+{"input": "Annapurna Super Market reported scheme calculation dispute raised; team asked for immediate follow-up. Impact visible on Economy Rice Pack.", "output": "pricing_conflict"}
+{"input": "Venkateswara Stores reported retailer running out of fast movers; counter staff highlighted repeated occurrence. Impact visible on Masala Chips Pack.", "output": "supply_chain_delay"}
+{"input": "Ganesh Provisions reported competitor giving higher retailer incentive; store comparing us with competitor supply. Impact visible on Economy Rice Pack.", "output": "competitor_pressure"}
+{"input": "Fresh Basket reported SKU missing in latest load; stock movement slowing this week. Impact visible on Premium Biscuits.", "output": "supply_chain_delay"}
+{"input": "Venkateswara Stores reported dealer losing patience; issue affecting secondary sales. Impact visible on Family Snack Combo.", "output": "retailer_dissatisfaction"}
+{"input": "Metro Needs reported retailer unhappy with support; similar feedback heard from nearby outlets. Impact visible on 500ml Cola Bottle.", "output": "retailer_dissatisfaction"}
+{"input": "Venkateswara Stores reported pricing mismatch noticed; team asked for immediate follow-up. Impact visible on Regular Soap Bar.", "output": "pricing_conflict"}
+{"input": "Fresh Basket reported bulk purchases observed; store comparing us with competitor supply. Impact visible on Premium Biscuits.", "output": "demand_spike"}
+{"input": "Annapurna Super Market reported owner upset about unresolved issue; counter staff highlighted repeated occurrence. Impact visible on Masala Chips Pack.", "output": "retailer_dissatisfaction"}
+{"input": "Sri Lakshmi Traders reported inventory mismatch reported; retailer sounded frustrated during discussion. Impact visible on Economy Rice Pack.", "output": "supply_chain_delay"}
+{"input": "Metro Needs reported billing price higher than expected; store owner requested quick action. Impact visible on Premium Biscuits.", "output": "pricing_conflict"}
+{"input": "Balaji Wholesale reported stock not received; counter staff highlighted repeated occurrence. Impact visible on Premium Biscuits.", "output": "supply_chain_delay"}
+{"input": "Mahalaxmi Agencies reported owner upset about unresolved issue; store comparing us with competitor supply. Impact visible on Masala Chips Pack.", "output": "retailer_dissatisfaction"}
+{"input": "Sri Lakshmi Traders reported billing price higher than expected; issue affecting secondary sales. Impact visible on 500ml Cola Bottle.", "output": "pricing_conflict"}
+{"input": "Metro Needs reported billing price higher than expected; store comparing us with competitor supply. Impact visible on 500ml Cola Bottle.", "output": "pricing_conflict"}
+{"input": "Ganesh Provisions reported high demand reported since weekend; counter staff highlighted repeated occurrence. Impact visible on Economy Rice Pack.", "output": "demand_spike"}
+{"input": "Fresh Basket reported rival brand pushing aggressive offers; issue affecting secondary sales. Impact visible on Regular Soap Bar.", "output": "competitor_pressure"}
+{"input": "Mahalaxmi Agencies reported retailer asking urgent refill; counter staff highlighted repeated occurrence. Impact visible on 500ml Cola Bottle.", "output": "demand_spike"}
+{"input": "Annapurna Super Market reported billing price higher than expected; retailer sounded frustrated during discussion. Impact visible on Masala Chips Pack.", "output": "pricing_conflict"}
+{"input": "Metro Needs reported scheme calculation dispute raised; counter staff highlighted repeated occurrence. Impact visible on Mini Noodles Pack.", "output": "pricing_conflict"}
+{"input": "Annapurna Super Market reported retailer shifting shelf space; retailer sounded frustrated during discussion. Impact visible on 1L Juice Bottle.", "output": "competitor_pressure"}
+{"input": "Fresh Basket reported owner upset about unresolved issue; issue affecting secondary sales. Impact visible on Regular Soap Bar.", "output": "retailer_dissatisfaction"}
+{"input": "Fresh Basket reported high demand reported since weekend; customers already asking questions. Impact visible on 500ml Cola Bottle.", "output": "demand_spike"}
+{"input": "Annapurna Super Market reported retailer shifting shelf space; counter staff highlighted repeated occurrence. Impact visible on Economy Rice Pack.", "output": "competitor_pressure"}
+{"input": "Venkateswara Stores reported dealer asking for extra discount; retailer sounded frustrated during discussion. Impact visible on Masala Chips Pack.", "output": "pricing_conflict"}
+{"input": "Venkateswara Stores reported SKU missing in latest load; customers already asking questions. Impact visible on Family Snack Combo.", "output": "supply_chain_delay"}
+{"input": "Ganesh Provisions reported retailer threatening to reduce orders; counter staff highlighted repeated occurrence. Impact visible on 500ml Cola Bottle.", "output": "retailer_dissatisfaction"}
+{"input": "Mahalaxmi Agencies reported pricing mismatch noticed; team asked for immediate follow-up. Impact visible on 500ml Cola Bottle.", "output": "pricing_conflict"}
+{"input": "Venkateswara Stores reported retailer threatening to reduce orders; store owner requested quick action. Impact visible on Premium Biscuits.", "output": "retailer_dissatisfaction"}
+{"input": "Kiran General Store reported SKU missing in latest load; issue affecting secondary sales. Impact visible on Regular Soap Bar.", "output": "supply_chain_delay"}
+{"input": "Kiran General Store reported competitor visibility increased sharply; stock movement slowing this week. Impact visible on Regular Soap Bar.", "output": "competitor_pressure"}
+{"input": "Kiran General Store reported new brand entering nearby market; customers already asking questions. Impact visible on Masala Chips Pack.", "output": "competitor_pressure"}
+{"input": "Balaji Wholesale reported retailer asking urgent refill; store comparing us with competitor supply. Impact visible on Family Snack Combo.", "output": "demand_spike"}
+{"input": "Sri Lakshmi Traders reported delivery pushed again; store owner requested quick action. Impact visible on Mini Noodles Pack.", "output": "supply_chain_delay"}
+{"input": "Sai Durga Mart reported dealer losing patience; customers already asking questions. Impact visible on 1L Juice Bottle.", "output": "retailer_dissatisfaction"}
+{"input": "Sai Durga Mart reported SKU missing in latest load; customers already asking questions. Impact visible on Mini Noodles Pack.", "output": "supply_chain_delay"}
+{"input": "Sai Durga Mart reported retailer threatening to reduce orders; store comparing us with competitor supply. Impact visible on 1L Juice Bottle.", "output": "retailer_dissatisfaction"}
+{"input": "Sri Lakshmi Traders reported unexpected jump in movement; morning sales impacted badly. Impact visible on Regular Soap Bar.", "output": "demand_spike"}
+{"input": "Mahalaxmi Agencies reported stock not received; stock movement slowing this week. Impact visible on 1L Juice Bottle.", "output": "supply_chain_delay"}
+{"input": "Metro Needs reported new brand entering nearby market; store comparing us with competitor supply. Impact visible on Family Snack Combo.", "output": "competitor_pressure"}
+{"input": "Ganesh Provisions reported unexpected jump in movement; issue affecting secondary sales. Impact visible on Mini Noodles Pack.", "output": "demand_spike"}
+{"input": "Metro Needs reported owner upset about unresolved issue; similar feedback heard from nearby outlets. Impact visible on Premium Biscuits.", "output": "retailer_dissatisfaction"}
+{"input": "Ganesh Provisions reported new brand entering nearby market; stock movement slowing this week. Impact visible on Economy Rice Pack.", "output": "competitor_pressure"}
+{"input": "Metro Needs reported retailer unhappy with support; retailer sounded frustrated during discussion. Impact visible on Mini Noodles Pack.", "output": "retailer_dissatisfaction"}
+{"input": "Mahalaxmi Agencies reported retailer threatening to reduce orders; retailer sounded frustrated during discussion. Impact visible on Masala Chips Pack.", "output": "retailer_dissatisfaction"}
+{"input": "Balaji Wholesale reported SKU missing in latest load; store owner requested quick action. Impact visible on Masala Chips Pack.", "output": "supply_chain_delay"}
+{"input": "Venkateswara Stores reported fast-moving SKU selling out quickly; customers already asking questions. Impact visible on Masala Chips Pack.", "output": "demand_spike"}
+{"input": "Kiran General Store reported dealer asking for extra discount; team asked for immediate follow-up. Impact visible on 1L Juice Bottle.", "output": "pricing_conflict"}
+{"input": "Annapurna Super Market reported unexpected jump in movement; store comparing us with competitor supply. Impact visible on Economy Rice Pack.", "output": "demand_spike"}
+{"input": "Sri Lakshmi Traders reported retailer shifting shelf space; similar feedback heard from nearby outlets. Impact visible on Economy Rice Pack.", "output": "competitor_pressure"}
+{"input": "Sri Lakshmi Traders reported retailer running out of fast movers; counter staff highlighted repeated occurrence. Impact visible on Economy Rice Pack.", "output": "supply_chain_delay"}
+{"input": "Venkateswara Stores reported stock not received; retailer sounded frustrated during discussion. Impact visible on 500ml Cola Bottle.", "output": "supply_chain_delay"}
+{"input": "Ganesh Provisions reported retailer unhappy with support; counter staff highlighted repeated occurrence. Impact visible on Masala Chips Pack.", "output": "retailer_dissatisfaction"}
+{"input": "Fresh Basket reported warehouse still holding dispatch; counter staff highlighted repeated occurrence. Impact visible on Masala Chips Pack.", "output": "supply_chain_delay"}
+{"input": "Sai Durga Mart reported retailer unhappy with support; similar feedback heard from nearby outlets. Impact visible on Regular Soap Bar.", "output": "retailer_dissatisfaction"}
+{"input": "Venkateswara Stores reported retailer shifting shelf space; counter staff highlighted repeated occurrence. Impact visible on Premium Biscuits.", "output": "competitor_pressure"}
+{"input": "Fresh Basket reported rival brand pushing aggressive offers; counter staff highlighted repeated occurrence. Impact visible on 500ml Cola Bottle.", "output": "competitor_pressure"}
+{"input": "Balaji Wholesale reported pricing mismatch noticed; stock movement slowing this week. Impact visible on Economy Rice Pack.", "output": "pricing_conflict"}
+{"input": "Kiran General Store reported stock not received; store comparing us with competitor supply. Impact visible on 1L Juice Bottle.", "output": "supply_chain_delay"}
+{"input": "Venkateswara Stores reported retailer asking urgent refill; store owner requested quick action. Impact visible on Economy Rice Pack.", "output": "demand_spike"}
+{"input": "Fresh Basket reported retailer threatening to reduce orders; customers already asking questions. Impact visible on Economy Rice Pack.", "output": "retailer_dissatisfaction"}
+{"input": "Mahalaxmi Agencies reported MRP confusion creating arguments; retailer sounded frustrated during discussion. Impact visible on 500ml Cola Bottle.", "output": "pricing_conflict"}
+{"input": "Kiran General Store reported owner upset about unresolved issue; morning sales impacted badly. Impact visible on Economy Rice Pack.", "output": "retailer_dissatisfaction"}
+{"input": "Sri Lakshmi Traders reported scheme calculation dispute raised; counter staff highlighted repeated occurrence. Impact visible on Premium Biscuits.", "output": "pricing_conflict"}
+{"input": "Venkateswara Stores reported rival brand pushing aggressive offers; morning sales impacted badly. Impact visible on 1L Juice Bottle.", "output": "competitor_pressure"}
+{"input": "Metro Needs reported bulk purchases observed; stock movement slowing this week. Impact visible on Premium Biscuits.", "output": "demand_spike"}
+{"input": "Sri Lakshmi Traders reported inventory mismatch reported; retailer sounded frustrated during discussion. Impact visible on Premium Biscuits.", "output": "supply_chain_delay"}
+{"input": "Mahalaxmi Agencies reported bulk purchases observed; stock movement slowing this week. Impact visible on 1L Juice Bottle.", "output": "demand_spike"}
+{"input": "Balaji Wholesale reported bulk purchases observed; counter staff highlighted repeated occurrence. Impact visible on Mini Noodles Pack.", "output": "demand_spike"}
+{"input": "Kiran General Store reported competitor giving higher retailer incentive; morning sales impacted badly. Impact visible on Regular Soap Bar.", "output": "competitor_pressure"}
+{"input": "Sri Lakshmi Traders reported owner upset about unresolved issue; team asked for immediate follow-up. Impact visible on Premium Biscuits.", "output": "retailer_dissatisfaction"}
+{"input": "Venkateswara Stores reported owner upset about unresolved issue; store owner requested quick action. Impact visible on Premium Biscuits.", "output": "retailer_dissatisfaction"}
+{"input": "Kiran General Store reported rival brand pushing aggressive offers; retailer sounded frustrated during discussion. Impact visible on 1L Juice Bottle.", "output": "competitor_pressure"}
+{"input": "Mahalaxmi Agencies reported retailer asking urgent refill; morning sales impacted badly. Impact visible on 1L Juice Bottle.", "output": "demand_spike"}
+{"input": "Sai Durga Mart reported retailer feels ignored; team asked for immediate follow-up. Impact visible on Regular Soap Bar.", "output": "retailer_dissatisfaction"}
+{"input": "Venkateswara Stores reported inventory mismatch reported; morning sales impacted badly. Impact visible on Mini Noodles Pack.", "output": "supply_chain_delay"}
+{"input": "Sai Durga Mart reported retailer asking urgent refill; similar feedback heard from nearby outlets. Impact visible on Economy Rice Pack.", "output": "demand_spike"}
+{"input": "Fresh Basket reported retailer shifting shelf space; stock movement slowing this week. Impact visible on 1L Juice Bottle.", "output": "competitor_pressure"}
+{"input": "Metro Needs reported partial shipment came; team asked for immediate follow-up. Impact visible on 1L Juice Bottle.", "output": "supply_chain_delay"}
+{"input": "Ganesh Provisions reported retailer asking urgent refill; issue affecting secondary sales. Impact visible on Family Snack Combo.", "output": "demand_spike"}
+{"input": "Sri Lakshmi Traders reported MRP confusion creating arguments; counter staff highlighted repeated occurrence. Impact visible on Mini Noodles Pack.", "output": "pricing_conflict"}
+{"input": "Fresh Basket reported stock not received; store comparing us with competitor supply. Impact visible on 1L Juice Bottle.", "output": "supply_chain_delay"}
+{"input": "Annapurna Super Market reported billing price higher than expected; store comparing us with competitor supply. Impact visible on Family Snack Combo.", "output": "pricing_conflict"}
+{"input": "Fresh Basket reported retailer threatening to reduce orders; morning sales impacted badly. Impact visible on 1L Juice Bottle.", "output": "retailer_dissatisfaction"}
+{"input": "Balaji Wholesale reported unexpected jump in movement; team asked for immediate follow-up. Impact visible on Premium Biscuits.", "output": "demand_spike"}
+{"input": "Sri Lakshmi Traders reported unexpected jump in movement; issue affecting secondary sales. Impact visible on 500ml Cola Bottle.", "output": "demand_spike"}
+{"input": "Ganesh Provisions reported owner upset about unresolved issue; similar feedback heard from nearby outlets. Impact visible on 1L Juice Bottle.", "output": "retailer_dissatisfaction"}
+{"input": "Balaji Wholesale reported pricing mismatch noticed; customers already asking questions. Impact visible on Regular Soap Bar.", "output": "pricing_conflict"}
+{"input": "Sri Lakshmi Traders reported retailer feels ignored; store owner requested quick action. Impact visible on Mini Noodles Pack.", "output": "retailer_dissatisfaction"}
+{"input": "Kiran General Store reported bulk purchases observed; similar feedback heard from nearby outlets. Impact visible on Economy Rice Pack.", "output": "demand_spike"}
+{"input": "Metro Needs reported competitor visibility increased sharply; customers already asking questions. Impact visible on 1L Juice Bottle.", "output": "competitor_pressure"}
+{"input": "Sai Durga Mart reported bulk purchases observed; stock movement slowing this week. Impact visible on 1L Juice Bottle.", "output": "demand_spike"}
+{"input": "Venkateswara Stores reported rival brand pushing aggressive offers; customers already asking questions. Impact visible on Premium Biscuits.", "output": "competitor_pressure"}
+{"input": "Sai Durga Mart reported pricing mismatch noticed; customers already asking questions. Impact visible on Mini Noodles Pack.", "output": "pricing_conflict"}
+{"input": "Fresh Basket reported pricing mismatch noticed; customers already asking questions. Impact visible on Mini Noodles Pack.", "output": "pricing_conflict"}
+{"input": "Mahalaxmi Agencies reported MRP confusion creating arguments; morning sales impacted badly. Impact visible on 1L Juice Bottle.", "output": "pricing_conflict"}
+{"input": "Fresh Basket reported retailer unhappy with support; store owner requested quick action. Impact visible on Masala Chips Pack.", "output": "retailer_dissatisfaction"}
+{"input": "Metro Needs reported retailer running out of fast movers; morning sales impacted badly. Impact visible on 500ml Cola Bottle.", "output": "supply_chain_delay"}
+{"input": "Sai Durga Mart reported bulk purchases observed; issue affecting secondary sales. Impact visible on Economy Rice Pack.", "output": "demand_spike"}
+{"input": "Metro Needs reported SKU missing in latest load; stock movement slowing this week. Impact visible on Economy Rice Pack.", "output": "supply_chain_delay"}
+{"input": "Metro Needs reported bulk purchases observed; counter staff highlighted repeated occurrence. Impact visible on Premium Biscuits.", "output": "demand_spike"}
+{"input": "Mahalaxmi Agencies reported retailer feels ignored; stock movement slowing this week. Impact visible on Masala Chips Pack.", "output": "retailer_dissatisfaction"}
+{"input": "Metro Needs reported rival brand pushing aggressive offers; customers already asking questions. Impact visible on Premium Biscuits.", "output": "competitor_pressure"}
+{"input": "Sri Lakshmi Traders reported owner upset about unresolved issue; morning sales impacted badly. Impact visible on 500ml Cola Bottle.", "output": "retailer_dissatisfaction"}
+{"input": "Sri Lakshmi Traders reported dealer asking for extra discount; store comparing us with competitor supply. Impact visible on Economy Rice Pack.", "output": "pricing_conflict"}
+{"input": "Sri Lakshmi Traders reported SKU missing in latest load; counter staff highlighted repeated occurrence. Impact visible on 1L Juice Bottle.", "output": "supply_chain_delay"}
+{"input": "Ganesh Provisions reported retailer threatening to reduce orders; team asked for immediate follow-up. Impact visible on Economy Rice Pack.", "output": "retailer_dissatisfaction"}
+{"input": "Kiran General Store reported dealer losing patience; similar feedback heard from nearby outlets. Impact visible on Family Snack Combo.", "output": "retailer_dissatisfaction"}
+{"input": "Annapurna Super Market reported fast-moving SKU selling out quickly; customers already asking questions. Impact visible on Premium Biscuits.", "output": "demand_spike"}
+{"input": "Ganesh Provisions reported retailer feels ignored; morning sales impacted badly. Impact visible on Mini Noodles Pack.", "output": "retailer_dissatisfaction"}
+{"input": "Mahalaxmi Agencies reported bulk purchases observed; retailer sounded frustrated during discussion. Impact visible on Family Snack Combo.", "output": "demand_spike"}
+{"input": "Balaji Wholesale reported billing price higher than expected; counter staff highlighted repeated occurrence. Impact visible on Mini Noodles Pack.", "output": "pricing_conflict"}
+{"input": "Annapurna Super Market reported dealer asking for extra discount; morning sales impacted badly. Impact visible on Premium Biscuits.", "output": "pricing_conflict"}
+{"input": "Ganesh Provisions reported dealer losing patience; store comparing us with competitor supply. Impact visible on 500ml Cola Bottle.", "output": "retailer_dissatisfaction"}
+{"input": "Annapurna Super Market reported warehouse still holding dispatch; customers already asking questions. Impact visible on Economy Rice Pack.", "output": "supply_chain_delay"}
+{"input": "Sri Lakshmi Traders reported dealer losing patience; store comparing us with competitor supply. Impact visible on Family Snack Combo.", "output": "retailer_dissatisfaction"}
+{"input": "Kiran General Store reported competitor giving higher retailer incentive; similar feedback heard from nearby outlets. Impact visible on 1L Juice Bottle.", "output": "competitor_pressure"}
+{"input": "Balaji Wholesale reported retailer threatening to reduce orders; morning sales impacted badly. Impact visible on Family Snack Combo.", "output": "retailer_dissatisfaction"}
+{"input": "Kiran General Store reported pricing mismatch noticed; retailer sounded frustrated during discussion. Impact visible on Premium Biscuits.", "output": "pricing_conflict"}
+{"input": "Venkateswara Stores reported MRP confusion creating arguments; morning sales impacted badly. Impact visible on Masala Chips Pack.", "output": "pricing_conflict"}
+{"input": "Sri Lakshmi Traders reported retailer running out of fast movers; counter staff highlighted repeated occurrence. Impact visible on Premium Biscuits.", "output": "supply_chain_delay"}
+{"input": "Venkateswara Stores reported retailer shifting shelf space; customers already asking questions. Impact visible on 1L Juice Bottle.", "output": "competitor_pressure"}
+{"input": "Sai Durga Mart reported unexpected jump in movement; issue affecting secondary sales. Impact visible on Economy Rice Pack.", "output": "demand_spike"}
+{"input": "Metro Needs reported warehouse still holding dispatch; retailer sounded frustrated during discussion. Impact visible on Family Snack Combo.", "output": "supply_chain_delay"}
+{"input": "Annapurna Super Market reported competitor visibility increased sharply; store comparing us with competitor supply. Impact visible on 1L Juice Bottle.", "output": "competitor_pressure"}
+{"input": "Balaji Wholesale reported retailer asking urgent refill; customers already asking questions. Impact visible on 1L Juice Bottle.", "output": "demand_spike"}
+{"input": "Balaji Wholesale reported retailer unhappy with support; morning sales impacted badly. Impact visible on Family Snack Combo.", "output": "retailer_dissatisfaction"}
+{"input": "Venkateswara Stores reported dealer asking for extra discount; store comparing us with competitor supply. Impact visible on Premium Biscuits.", "output": "pricing_conflict"}
+{"input": "Metro Needs reported unexpected jump in movement; stock movement slowing this week. Impact visible on 500ml Cola Bottle.", "output": "demand_spike"}
+{"input": "Balaji Wholesale reported scheme calculation dispute raised; store comparing us with competitor supply. Impact visible on Family Snack Combo.", "output": "pricing_conflict"}
+{"input": "Venkateswara Stores reported warehouse still holding dispatch; retailer sounded frustrated during discussion. Impact visible on 500ml Cola Bottle.", "output": "supply_chain_delay"}
+{"input": "Metro Needs reported MRP confusion creating arguments; morning sales impacted badly. Impact visible on Regular Soap Bar.", "output": "pricing_conflict"}
+{"input": "Fresh Basket reported retailer threatening to reduce orders; counter staff highlighted repeated occurrence. Impact visible on 500ml Cola Bottle.", "output": "retailer_dissatisfaction"}
+{"input": "Sai Durga Mart reported retailer threatening to reduce orders; similar feedback heard from nearby outlets. Impact visible on 500ml Cola Bottle.", "output": "retailer_dissatisfaction"}
+{"input": "Balaji Wholesale reported retailer shifting shelf space; team asked for immediate follow-up. Impact visible on Economy Rice Pack.", "output": "competitor_pressure"}
+{"input": "Fresh Basket reported retailer asking urgent refill; morning sales impacted badly. Impact visible on Economy Rice Pack.", "output": "demand_spike"}
+{"input": "Mahalaxmi Agencies reported retailer unhappy with support; issue affecting secondary sales. Impact visible on Masala Chips Pack.", "output": "retailer_dissatisfaction"}
+{"input": "Metro Needs reported billing price higher than expected; similar feedback heard from nearby outlets. Impact visible on 1L Juice Bottle.", "output": "pricing_conflict"}
+{"input": "Mahalaxmi Agencies reported high demand reported since weekend; store comparing us with competitor supply. Impact visible on Premium Biscuits.", "output": "demand_spike"}
+{"input": "Metro Needs reported retailer threatening to reduce orders; issue affecting secondary sales. Impact visible on Premium Biscuits.", "output": "retailer_dissatisfaction"}
+{"input": "Annapurna Super Market reported competitor giving higher retailer incentive; issue affecting secondary sales. Impact visible on 500ml Cola Bottle.", "output": "competitor_pressure"}
+{"input": "Sai Durga Mart reported warehouse still holding dispatch; store comparing us with competitor supply. Impact visible on Mini Noodles Pack.", "output": "supply_chain_delay"}
+{"input": "Mahalaxmi Agencies reported billing price higher than expected; issue affecting secondary sales. Impact visible on Masala Chips Pack.", "output": "pricing_conflict"}
+{"input": "Venkateswara Stores reported competitor visibility increased sharply; customers already asking questions. Impact visible on Regular Soap Bar.", "output": "competitor_pressure"}
+{"input": "Mahalaxmi Agencies reported competitor giving higher retailer incentive; customers already asking questions. Impact visible on Mini Noodles Pack.", "output": "competitor_pressure"}
+{"input": "Ganesh Provisions reported fast-moving SKU selling out quickly; similar feedback heard from nearby outlets. Impact visible on Economy Rice Pack.", "output": "demand_spike"}
+{"input": "Kiran General Store reported rival brand pushing aggressive offers; team asked for immediate follow-up. Impact visible on Masala Chips Pack.", "output": "competitor_pressure"}
+{"input": "Kiran General Store reported competitor giving higher retailer incentive; counter staff highlighted repeated occurrence. Impact visible on Family Snack Combo.", "output": "competitor_pressure"}
+{"input": "Fresh Basket reported retailer threatening to reduce orders; issue affecting secondary sales. Impact visible on Premium Biscuits.", "output": "retailer_dissatisfaction"}
+{"input": "Ganesh Provisions reported fast-moving SKU selling out quickly; similar feedback heard from nearby outlets. Impact visible on Regular Soap Bar.", "output": "demand_spike"}
+{"input": "Balaji Wholesale reported competitor visibility increased sharply; morning sales impacted badly. Impact visible on Masala Chips Pack.", "output": "competitor_pressure"}
+{"input": "Balaji Wholesale reported warehouse still holding dispatch; customers already asking questions. Impact visible on Premium Biscuits.", "output": "supply_chain_delay"}
+{"input": "Sai Durga Mart reported MRP confusion creating arguments; team asked for immediate follow-up. Impact visible on 1L Juice Bottle.", "output": "pricing_conflict"}
+{"input": "Sri Lakshmi Traders reported high demand reported since weekend; morning sales impacted badly. Impact visible on Economy Rice Pack.", "output": "demand_spike"}
+{"input": "Kiran General Store reported dealer losing patience; customers already asking questions. Impact visible on Regular Soap Bar.", "output": "retailer_dissatisfaction"}
+{"input": "Ganesh Provisions reported partial shipment came; similar feedback heard from nearby outlets. Impact visible on 1L Juice Bottle.", "output": "supply_chain_delay"}
+{"input": "Annapurna Super Market reported competitor giving higher retailer incentive; store owner requested quick action. Impact visible on 1L Juice Bottle.", "output": "competitor_pressure"}
+{"input": "Sai Durga Mart reported retailer unhappy with support; store owner requested quick action. Impact visible on Family Snack Combo.", "output": "retailer_dissatisfaction"}
+{"input": "Metro Needs reported dealer losing patience; morning sales impacted badly. Impact visible on Economy Rice Pack.", "output": "retailer_dissatisfaction"}
+{"input": "Ganesh Provisions reported SKU missing in latest load; team asked for immediate follow-up. Impact visible on Premium Biscuits.", "output": "supply_chain_delay"}
+{"input": "Fresh Basket reported retailer running out of fast movers; morning sales impacted badly. Impact visible on Regular Soap Bar.", "output": "supply_chain_delay"}
+{"input": "Balaji Wholesale reported competitor giving higher retailer incentive; morning sales impacted badly. Impact visible on Regular Soap Bar.", "output": "competitor_pressure"}
+{"input": "Ganesh Provisions reported new brand entering nearby market; team asked for immediate follow-up. Impact visible on 1L Juice Bottle.", "output": "competitor_pressure"}
+{"input": "Fresh Basket reported retailer threatening to reduce orders; stock movement slowing this week. Impact visible on Mini Noodles Pack.", "output": "retailer_dissatisfaction"}
+{"input": "Mahalaxmi Agencies reported unexpected jump in movement; store owner requested quick action. Impact visible on Premium Biscuits.", "output": "demand_spike"}
+{"input": "Kiran General Store reported SKU missing in latest load; similar feedback heard from nearby outlets. Impact visible on Mini Noodles Pack.", "output": "supply_chain_delay"}
+{"input": "Kiran General Store reported retailer running out of fast movers; issue affecting secondary sales. Impact visible on Economy Rice Pack.", "output": "supply_chain_delay"}
+{"input": "Metro Needs reported bulk purchases observed; stock movement slowing this week. Impact visible on Economy Rice Pack.", "output": "demand_spike"}
+{"input": "Balaji Wholesale reported MRP confusion creating arguments; issue affecting secondary sales. Impact visible on 1L Juice Bottle.", "output": "pricing_conflict"}
+{"input": "Sai Durga Mart reported billing price higher than expected; team asked for immediate follow-up. Impact visible on Regular Soap Bar.", "output": "pricing_conflict"}
+{"input": "Venkateswara Stores reported retailer shifting shelf space; morning sales impacted badly. Impact visible on Premium Biscuits.", "output": "competitor_pressure"}
+{"input": "Sai Durga Mart reported competitor giving higher retailer incentive; store comparing us with competitor supply. Impact visible on Family Snack Combo.", "output": "competitor_pressure"}
+{"input": "Metro Needs reported bulk purchases observed; customers already asking questions. Impact visible on Premium Biscuits.", "output": "demand_spike"}
+{"input": "Balaji Wholesale reported retailer shifting shelf space; store comparing us with competitor supply. Impact visible on Masala Chips Pack.", "output": "competitor_pressure"}
+{"input": "Fresh Basket reported retailer shifting shelf space; customers already asking questions. Impact visible on Premium Biscuits.", "output": "competitor_pressure"}
+{"input": "Annapurna Super Market reported retailer asking urgent refill; store comparing us with competitor supply. Impact visible on Regular Soap Bar.", "output": "demand_spike"}
+{"input": "Venkateswara Stores reported new brand entering nearby market; store owner requested quick action. Impact visible on Regular Soap Bar.", "output": "competitor_pressure"}
+{"input": "Sai Durga Mart reported warehouse still holding dispatch; store comparing us with competitor supply. Impact visible on 1L Juice Bottle.", "output": "supply_chain_delay"}
+{"input": "Annapurna Super Market reported retailer unhappy with support; counter staff highlighted repeated occurrence. Impact visible on Regular Soap Bar.", "output": "retailer_dissatisfaction"}
+{"input": "Ganesh Provisions reported retailer shifting shelf space; morning sales impacted badly. Impact visible on Premium Biscuits.", "output": "competitor_pressure"}
+{"input": "Venkateswara Stores reported owner upset about unresolved issue; counter staff highlighted repeated occurrence. Impact visible on Economy Rice Pack.", "output": "retailer_dissatisfaction"}
+{"input": "Kiran General Store reported rival brand pushing aggressive offers; team asked for immediate follow-up. Impact visible on Regular Soap Bar.", "output": "competitor_pressure"}
+{"input": "Metro Needs reported high demand reported since weekend; retailer sounded frustrated during discussion. Impact visible on Family Snack Combo.", "output": "demand_spike"}
+{"input": "Ganesh Provisions reported retailer unhappy with support; stock movement slowing this week. Impact visible on 1L Juice Bottle.", "output": "retailer_dissatisfaction"}
+{"input": "Ganesh Provisions reported retailer running out of fast movers; retailer sounded frustrated during discussion. Impact visible on 500ml Cola Bottle.", "output": "supply_chain_delay"}
+{"input": "Balaji Wholesale reported new brand entering nearby market; customers already asking questions. Impact visible on 1L Juice Bottle.", "output": "competitor_pressure"}
+{"input": "Kiran General Store reported competitor giving higher retailer incentive; similar feedback heard from nearby outlets. Impact visible on Premium Biscuits.", "output": "competitor_pressure"}
+{"input": "Kiran General Store reported competitor giving higher retailer incentive; issue affecting secondary sales. Impact visible on Family Snack Combo.", "output": "competitor_pressure"}
+{"input": "Mahalaxmi Agencies reported dealer losing patience; stock movement slowing this week. Impact visible on 500ml Cola Bottle.", "output": "retailer_dissatisfaction"}
+{"input": "Venkateswara Stores reported fast-moving SKU selling out quickly; stock movement slowing this week. Impact visible on Mini Noodles Pack.", "output": "demand_spike"}
+{"input": "Balaji Wholesale reported dealer losing patience; counter staff highlighted repeated occurrence. Impact visible on 500ml Cola Bottle.", "output": "retailer_dissatisfaction"}
+{"input": "Metro Needs reported pricing mismatch noticed; retailer sounded frustrated during discussion. Impact visible on Regular Soap Bar.", "output": "pricing_conflict"}
+{"input": "Ganesh Provisions reported partial shipment came; stock movement slowing this week. Impact visible on Regular Soap Bar.", "output": "supply_chain_delay"}
+{"input": "Metro Needs reported retailer asking urgent refill; retailer sounded frustrated during discussion. Impact visible on Masala Chips Pack.", "output": "demand_spike"}
+{"input": "Metro Needs reported retailer unhappy with support; customers already asking questions. Impact visible on Family Snack Combo.", "output": "retailer_dissatisfaction"}
+{"input": "Metro Needs reported delivery pushed again; retailer sounded frustrated during discussion. Impact visible on 500ml Cola Bottle.", "output": "supply_chain_delay"}
+{"input": "Kiran General Store reported new brand entering nearby market; store owner requested quick action. Impact visible on Family Snack Combo.", "output": "competitor_pressure"}
+{"input": "Ganesh Provisions reported delivery pushed again; team asked for immediate follow-up. Impact visible on 500ml Cola Bottle.", "output": "supply_chain_delay"}
+{"input": "Sai Durga Mart reported fast-moving SKU selling out quickly; stock movement slowing this week. Impact visible on Masala Chips Pack.", "output": "demand_spike"}
+{"input": "Kiran General Store reported billing price higher than expected; team asked for immediate follow-up. Impact visible on 500ml Cola Bottle.", "output": "pricing_conflict"}
+{"input": "Metro Needs reported scheme calculation dispute raised; team asked for immediate follow-up. Impact visible on Masala Chips Pack.", "output": "pricing_conflict"}
+{"input": "Sai Durga Mart reported billing price higher than expected; customers already asking questions. Impact visible on Mini Noodles Pack.", "output": "pricing_conflict"}
+{"input": "Fresh Basket reported billing price higher than expected; store comparing us with competitor supply. Impact visible on 500ml Cola Bottle.", "output": "pricing_conflict"}
+{"input": "Kiran General Store reported retailer unhappy with support; team asked for immediate follow-up. Impact visible on Regular Soap Bar.", "output": "retailer_dissatisfaction"}
+{"input": "Kiran General Store reported retailer unhappy with support; issue affecting secondary sales. Impact visible on Family Snack Combo.", "output": "retailer_dissatisfaction"}
+{"input": "Ganesh Provisions reported fast-moving SKU selling out quickly; counter staff highlighted repeated occurrence. Impact visible on Family Snack Combo.", "output": "demand_spike"}
+{"input": "Fresh Basket reported retailer running out of fast movers; morning sales impacted badly. Impact visible on Family Snack Combo.", "output": "supply_chain_delay"}
+{"input": "Ganesh Provisions reported competitor visibility increased sharply; counter staff highlighted repeated occurrence. Impact visible on Economy Rice Pack.", "output": "competitor_pressure"}
+{"input": "Venkateswara Stores reported unexpected jump in movement; morning sales impacted badly. Impact visible on Masala Chips Pack.", "output": "demand_spike"}
+{"input": "Ganesh Provisions reported stock not received; counter staff highlighted repeated occurrence. Impact visible on Family Snack Combo.", "output": "supply_chain_delay"}
+{"input": "Balaji Wholesale reported competitor visibility increased sharply; store owner requested quick action. Impact visible on Mini Noodles Pack.", "output": "competitor_pressure"}
+{"input": "Sai Durga Mart reported billing price higher than expected; similar feedback heard from nearby outlets. Impact visible on Mini Noodles Pack.", "output": "pricing_conflict"}
+{"input": "Metro Needs reported rival brand pushing aggressive offers; store owner requested quick action. Impact visible on Family Snack Combo.", "output": "competitor_pressure"}
+{"input": "Venkateswara Stores reported SKU missing in latest load; store comparing us with competitor supply. Impact visible on 1L Juice Bottle.", "output": "supply_chain_delay"}
+{"input": "Mahalaxmi Agencies reported delivery pushed again; issue affecting secondary sales. Impact visible on Mini Noodles Pack.", "output": "supply_chain_delay"}
+{"input": "Sai Durga Mart reported SKU missing in latest load; counter staff highlighted repeated occurrence. Impact visible on 500ml Cola Bottle.", "output": "supply_chain_delay"}
+{"input": "Venkateswara Stores reported stock not received; store comparing us with competitor supply. Impact visible on 500ml Cola Bottle.", "output": "supply_chain_delay"}
+{"input": "Kiran General Store reported unexpected jump in movement; morning sales impacted badly. Impact visible on Premium Biscuits.", "output": "demand_spike"}
+{"input": "Mahalaxmi Agencies reported retailer unhappy with support; retailer sounded frustrated during discussion. Impact visible on 500ml Cola Bottle.", "output": "retailer_dissatisfaction"}
+{"input": "Fresh Basket reported rival brand pushing aggressive offers; store comparing us with competitor supply. Impact visible on Economy Rice Pack.", "output": "competitor_pressure"}
+{"input": "Metro Needs reported retailer feels ignored; stock movement slowing this week. Impact visible on Family Snack Combo.", "output": "retailer_dissatisfaction"}
+{"input": "Annapurna Super Market reported fast-moving SKU selling out quickly; customers already asking questions. Impact visible on 1L Juice Bottle.", "output": "demand_spike"}
+{"input": "Annapurna Super Market reported stock not received; store owner requested quick action. Impact visible on Economy Rice Pack.", "output": "supply_chain_delay"}
+{"input": "Kiran General Store reported billing price higher than expected; similar feedback heard from nearby outlets. Impact visible on Premium Biscuits.", "output": "pricing_conflict"}
+{"input": "Sai Durga Mart reported unexpected jump in movement; team asked for immediate follow-up. Impact visible on 500ml Cola Bottle.", "output": "demand_spike"}
+{"input": "Kiran General Store reported pricing mismatch noticed; store comparing us with competitor supply. Impact visible on Family Snack Combo.", "output": "pricing_conflict"}
+{"input": "Metro Needs reported competitor visibility increased sharply; morning sales impacted badly. Impact visible on Premium Biscuits.", "output": "competitor_pressure"}
+{"input": "Mahalaxmi Agencies reported SKU missing in latest load; issue affecting secondary sales. Impact visible on 1L Juice Bottle.", "output": "supply_chain_delay"}
+{"input": "Sri Lakshmi Traders reported retailer threatening to reduce orders; retailer sounded frustrated during discussion. Impact visible on Mini Noodles Pack.", "output": "retailer_dissatisfaction"}
+{"input": "Sri Lakshmi Traders reported warehouse still holding dispatch; stock movement slowing this week. Impact visible on Family Snack Combo.", "output": "supply_chain_delay"}
+{"input": "Venkateswara Stores reported retailer unhappy with support; store comparing us with competitor supply. Impact visible on Masala Chips Pack.", "output": "retailer_dissatisfaction"}
+{"input": "Annapurna Super Market reported scheme calculation dispute raised; store comparing us with competitor supply. Impact visible on 500ml Cola Bottle.", "output": "pricing_conflict"}
+{"input": "Sai Durga Mart reported retailer running out of fast movers; retailer sounded frustrated during discussion. Impact visible on Premium Biscuits.", "output": "supply_chain_delay"}
+{"input": "Balaji Wholesale reported retailer running out of fast movers; customers already asking questions. Impact visible on Regular Soap Bar.", "output": "supply_chain_delay"}
+{"input": "Annapurna Super Market reported new brand entering nearby market; store comparing us with competitor supply. Impact visible on Regular Soap Bar.", "output": "competitor_pressure"}
+{"input": "Balaji Wholesale reported high demand reported since weekend; counter staff highlighted repeated occurrence. Impact visible on Regular Soap Bar.", "output": "demand_spike"}
+{"input": "Fresh Basket reported competitor giving higher retailer incentive; similar feedback heard from nearby outlets. Impact visible on Masala Chips Pack.", "output": "competitor_pressure"}
+{"input": "Metro Needs reported retailer running out of fast movers; issue affecting secondary sales. Impact visible on Masala Chips Pack.", "output": "supply_chain_delay"}
+{"input": "Fresh Basket reported retailer unhappy with support; issue affecting secondary sales. Impact visible on Mini Noodles Pack.", "output": "retailer_dissatisfaction"}
+{"input": "Annapurna Super Market reported bulk purchases observed; issue affecting secondary sales. Impact visible on Economy Rice Pack.", "output": "demand_spike"}
+{"input": "Ganesh Provisions reported fast-moving SKU selling out quickly; store owner requested quick action. Impact visible on Regular Soap Bar.", "output": "demand_spike"}
+{"input": "Sri Lakshmi Traders reported retailer shifting shelf space; customers already asking questions. Impact visible on 1L Juice Bottle.", "output": "competitor_pressure"}
+{"input": "Sai Durga Mart reported inventory mismatch reported; retailer sounded frustrated during discussion. Impact visible on 500ml Cola Bottle.", "output": "supply_chain_delay"}
+{"input": "Ganesh Provisions reported retailer shifting shelf space; store comparing us with competitor supply. Impact visible on Regular Soap Bar.", "output": "competitor_pressure"}
+{"input": "Annapurna Super Market reported rival brand pushing aggressive offers; retailer sounded frustrated during discussion. Impact visible on Premium Biscuits.", "output": "competitor_pressure"}
+{"input": "Fresh Basket reported retailer asking urgent refill; stock movement slowing this week. Impact visible on Family Snack Combo.", "output": "demand_spike"}
+{"input": "Kiran General Store reported warehouse still holding dispatch; morning sales impacted badly. Impact visible on Economy Rice Pack.", "output": "supply_chain_delay"}
+{"input": "Sai Durga Mart reported SKU missing in latest load; store comparing us with competitor supply. Impact visible on 1L Juice Bottle.", "output": "supply_chain_delay"}
+{"input": "Kiran General Store reported scheme calculation dispute raised; customers already asking questions. Impact visible on Premium Biscuits.", "output": "pricing_conflict"}
+{"input": "Venkateswara Stores reported dealer losing patience; customers already asking questions. Impact visible on Masala Chips Pack.", "output": "retailer_dissatisfaction"}
+{"input": "Sai Durga Mart reported dealer asking for extra discount; issue affecting secondary sales. Impact visible on 500ml Cola Bottle.", "output": "pricing_conflict"}
+{"input": "Sai Durga Mart reported MRP confusion creating arguments; store owner requested quick action. Impact visible on 1L Juice Bottle.", "output": "pricing_conflict"}
+{"input": "Balaji Wholesale reported retailer shifting shelf space; stock movement slowing this week. Impact visible on Regular Soap Bar.", "output": "competitor_pressure"}
+{"input": "Ganesh Provisions reported unexpected jump in movement; team asked for immediate follow-up. Impact visible on Family Snack Combo.", "output": "demand_spike"}
+{"input": "Fresh Basket reported inventory mismatch reported; stock movement slowing this week. Impact visible on Mini Noodles Pack.", "output": "supply_chain_delay"}
+{"input": "Annapurna Super Market reported fast-moving SKU selling out quickly; team asked for immediate follow-up. Impact visible on Premium Biscuits.", "output": "demand_spike"}
+{"input": "Mahalaxmi Agencies reported retailer feels ignored; issue affecting secondary sales. Impact visible on Economy Rice Pack.", "output": "retailer_dissatisfaction"}
+{"input": "Balaji Wholesale reported new brand entering nearby market; store comparing us with competitor supply. Impact visible on Economy Rice Pack.", "output": "competitor_pressure"}
+{"input": "Sai Durga Mart reported retailer unhappy with support; issue affecting secondary sales. Impact visible on 500ml Cola Bottle.", "output": "retailer_dissatisfaction"}
+{"input": "Sai Durga Mart reported unexpected jump in movement; similar feedback heard from nearby outlets. Impact visible on Mini Noodles Pack.", "output": "demand_spike"}
+{"input": "Annapurna Super Market reported retailer asking urgent refill; retailer sounded frustrated during discussion. Impact visible on Masala Chips Pack.", "output": "demand_spike"}
+{"input": "Kiran General Store reported billing price higher than expected; customers already asking questions. Impact visible on Regular Soap Bar.", "output": "pricing_conflict"}
+{"input": "Fresh Basket reported retailer running out of fast movers; store owner requested quick action. Impact visible on Family Snack Combo.", "output": "supply_chain_delay"}
+{"input": "Balaji Wholesale reported retailer shifting shelf space; store owner requested quick action. Impact visible on Regular Soap Bar.", "output": "competitor_pressure"}
+{"input": "Metro Needs reported fast-moving SKU selling out quickly; counter staff highlighted repeated occurrence. Impact visible on Mini Noodles Pack.", "output": "demand_spike"}
+{"input": "Balaji Wholesale reported new brand entering nearby market; morning sales impacted badly. Impact visible on Premium Biscuits.", "output": "competitor_pressure"}
+{"input": "Sri Lakshmi Traders reported retailer threatening to reduce orders; morning sales impacted badly. Impact visible on Premium Biscuits.", "output": "retailer_dissatisfaction"}
+{"input": "Venkateswara Stores reported billing price higher than expected; similar feedback heard from nearby outlets. Impact visible on Masala Chips Pack.", "output": "pricing_conflict"}
+{"input": "Metro Needs reported stock not received; customers already asking questions. Impact visible on Premium Biscuits.", "output": "supply_chain_delay"}
+{"input": "Fresh Basket reported retailer threatening to reduce orders; issue affecting secondary sales. Impact visible on 500ml Cola Bottle.", "output": "retailer_dissatisfaction"}
+{"input": "Kiran General Store reported MRP confusion creating arguments; store owner requested quick action. Impact visible on 500ml Cola Bottle.", "output": "pricing_conflict"}
+{"input": "Sri Lakshmi Traders reported unexpected jump in movement; customers already asking questions. Impact visible on Mini Noodles Pack.", "output": "demand_spike"}
+{"input": "Metro Needs reported warehouse still holding dispatch; team asked for immediate follow-up. Impact visible on Masala Chips Pack.", "output": "supply_chain_delay"}
+{"input": "Fresh Basket reported delivery pushed again; store owner requested quick action. Impact visible on Masala Chips Pack.", "output": "supply_chain_delay"}
+{"input": "Ganesh Provisions reported scheme calculation dispute raised; similar feedback heard from nearby outlets. Impact visible on Economy Rice Pack.", "output": "pricing_conflict"}
+{"input": "Sri Lakshmi Traders reported unexpected jump in movement; issue affecting secondary sales. Impact visible on Masala Chips Pack.", "output": "demand_spike"}
+{"input": "Ganesh Provisions reported MRP confusion creating arguments; issue affecting secondary sales. Impact visible on 1L Juice Bottle.", "output": "pricing_conflict"}
+{"input": "Mahalaxmi Agencies reported billing price higher than expected; store owner requested quick action. Impact visible on Premium Biscuits.", "output": "pricing_conflict"}
+{"input": "Mahalaxmi Agencies reported retailer threatening to reduce orders; morning sales impacted badly. Impact visible on Regular Soap Bar.", "output": "retailer_dissatisfaction"}
+{"input": "Balaji Wholesale reported retailer threatening to reduce orders; counter staff highlighted repeated occurrence. Impact visible on 1L Juice Bottle.", "output": "retailer_dissatisfaction"}
+{"input": "Kiran General Store reported retailer shifting shelf space; store comparing us with competitor supply. Impact visible on Regular Soap Bar.", "output": "competitor_pressure"}
+{"input": "Metro Needs reported owner upset about unresolved issue; store owner requested quick action. Impact visible on Economy Rice Pack.", "output": "retailer_dissatisfaction"}
+{"input": "Sai Durga Mart reported retailer asking urgent refill; morning sales impacted badly. Impact visible on Premium Biscuits.", "output": "demand_spike"}
+{"input": "Sri Lakshmi Traders reported stock not received; similar feedback heard from nearby outlets. Impact visible on Premium Biscuits.", "output": "supply_chain_delay"}
+{"input": "Annapurna Super Market reported unexpected jump in movement; stock movement slowing this week. Impact visible on 1L Juice Bottle.", "output": "demand_spike"}
+{"input": "Fresh Basket reported high demand reported since weekend; store owner requested quick action. Impact visible on 500ml Cola Bottle.", "output": "demand_spike"}
+{"input": "Ganesh Provisions reported MRP confusion creating arguments; morning sales impacted badly. Impact visible on Economy Rice Pack.", "output": "pricing_conflict"}
+{"input": "Fresh Basket reported retailer shifting shelf space; customers already asking questions. Impact visible on 500ml Cola Bottle.", "output": "competitor_pressure"}
+{"input": "Metro Needs reported retailer shifting shelf space; similar feedback heard from nearby outlets. Impact visible on Mini Noodles Pack.", "output": "competitor_pressure"}
+{"input": "Metro Needs reported pricing mismatch noticed; store owner requested quick action. Impact visible on Premium Biscuits.", "output": "pricing_conflict"}
+{"input": "Ganesh Provisions reported inventory mismatch reported; similar feedback heard from nearby outlets. Impact visible on 500ml Cola Bottle.", "output": "supply_chain_delay"}
+{"input": "Sai Durga Mart reported owner upset about unresolved issue; customers already asking questions. Impact visible on Mini Noodles Pack.", "output": "retailer_dissatisfaction"}
+{"input": "Balaji Wholesale reported scheme calculation dispute raised; similar feedback heard from nearby outlets. Impact visible on Mini Noodles Pack.", "output": "pricing_conflict"}
+{"input": "Metro Needs reported billing price higher than expected; similar feedback heard from nearby outlets. Impact visible on Regular Soap Bar.", "output": "pricing_conflict"}
+{"input": "Kiran General Store reported fast-moving SKU selling out quickly; store owner requested quick action. Impact visible on Family Snack Combo.", "output": "demand_spike"}
+{"input": "Ganesh Provisions reported billing price higher than expected; counter staff highlighted repeated occurrence. Impact visible on Premium Biscuits.", "output": "pricing_conflict"}
+{"input": "Balaji Wholesale reported rival brand pushing aggressive offers; similar feedback heard from nearby outlets. Impact visible on Premium Biscuits.", "output": "competitor_pressure"}
+{"input": "Annapurna Super Market reported billing price higher than expected; similar feedback heard from nearby outlets. Impact visible on Regular Soap Bar.", "output": "pricing_conflict"}
+{"input": "Kiran General Store reported retailer running out of fast movers; customers already asking questions. Impact visible on 1L Juice Bottle.", "output": "supply_chain_delay"}
+{"input": "Fresh Basket reported rival brand pushing aggressive offers; similar feedback heard from nearby outlets. Impact visible on Regular Soap Bar.", "output": "competitor_pressure"}
+{"input": "Balaji Wholesale reported competitor visibility increased sharply; counter staff highlighted repeated occurrence. Impact visible on Economy Rice Pack.", "output": "competitor_pressure"}
+{"input": "Kiran General Store reported retailer running out of fast movers; retailer sounded frustrated during discussion. Impact visible on Premium Biscuits.", "output": "supply_chain_delay"}
+{"input": "Kiran General Store reported billing price higher than expected; store comparing us with competitor supply. Impact visible on Regular Soap Bar.", "output": "pricing_conflict"}
+{"input": "Mahalaxmi Agencies reported retailer asking urgent refill; stock movement slowing this week. Impact visible on 1L Juice Bottle.", "output": "demand_spike"}
+{"input": "Sai Durga Mart reported scheme calculation dispute raised; similar feedback heard from nearby outlets. Impact visible on Family Snack Combo.", "output": "pricing_conflict"}
+{"input": "Ganesh Provisions reported MRP confusion creating arguments; counter staff highlighted repeated occurrence. Impact visible on 500ml Cola Bottle.", "output": "pricing_conflict"}
+{"input": "Balaji Wholesale reported warehouse still holding dispatch; issue affecting secondary sales. Impact visible on Regular Soap Bar.", "output": "supply_chain_delay"}
+{"input": "Metro Needs reported dealer asking for extra discount; customers already asking questions. Impact visible on Economy Rice Pack.", "output": "pricing_conflict"}
+{"input": "Sri Lakshmi Traders reported unexpected jump in movement; store owner requested quick action. Impact visible on 1L Juice Bottle.", "output": "demand_spike"}
+{"input": "Fresh Basket reported high demand reported since weekend; customers already asking questions. Impact visible on Family Snack Combo.", "output": "demand_spike"}
+{"input": "Venkateswara Stores reported retailer running out of fast movers; team asked for immediate follow-up. Impact visible on Regular Soap Bar.", "output": "supply_chain_delay"}
+{"input": "Sri Lakshmi Traders reported scheme calculation dispute raised; issue affecting secondary sales. Impact visible on Family Snack Combo.", "output": "pricing_conflict"}
+{"input": "Balaji Wholesale reported retailer shifting shelf space; morning sales impacted badly. Impact visible on Premium Biscuits.", "output": "competitor_pressure"}
+{"input": "Sai Durga Mart reported MRP confusion creating arguments; stock movement slowing this week. Impact visible on Regular Soap Bar.", "output": "pricing_conflict"}
+{"input": "Mahalaxmi Agencies reported high demand reported since weekend; store owner requested quick action. Impact visible on Mini Noodles Pack.", "output": "demand_spike"}
+{"input": "Sri Lakshmi Traders reported retailer shifting shelf space; morning sales impacted badly. Impact visible on Family Snack Combo.", "output": "competitor_pressure"}
+{"input": "Kiran General Store reported retailer shifting shelf space; team asked for immediate follow-up. Impact visible on Regular Soap Bar.", "output": "competitor_pressure"}
+{"input": "Sai Durga Mart reported retailer running out of fast movers; retailer sounded frustrated during discussion. Impact visible on Family Snack Combo.", "output": "supply_chain_delay"}
+{"input": "Venkateswara Stores reported stock not received; similar feedback heard from nearby outlets. Impact visible on Economy Rice Pack.", "output": "supply_chain_delay"}
+{"input": "Metro Needs reported rival brand pushing aggressive offers; retailer sounded frustrated during discussion. Impact visible on Regular Soap Bar.", "output": "competitor_pressure"}
+{"input": "Fresh Basket reported rival brand pushing aggressive offers; store owner requested quick action. Impact visible on Premium Biscuits.", "output": "competitor_pressure"}
+{"input": "Ganesh Provisions reported warehouse still holding dispatch; retailer sounded frustrated during discussion. Impact visible on 1L Juice Bottle.", "output": "supply_chain_delay"}
+{"input": "Sri Lakshmi Traders reported competitor giving higher retailer incentive; store owner requested quick action. Impact visible on Economy Rice Pack.", "output": "competitor_pressure"}
+{"input": "Sai Durga Mart reported bulk purchases observed; similar feedback heard from nearby outlets. Impact visible on Masala Chips Pack.", "output": "demand_spike"}
+{"input": "Sai Durga Mart reported delivery pushed again; retailer sounded frustrated during discussion. Impact visible on 1L Juice Bottle.", "output": "supply_chain_delay"}
+{"input": "Sri Lakshmi Traders reported new brand entering nearby market; stock movement slowing this week. Impact visible on 500ml Cola Bottle.", "output": "competitor_pressure"}
+{"input": "Mahalaxmi Agencies reported pricing mismatch noticed; morning sales impacted badly. Impact visible on Regular Soap Bar.", "output": "pricing_conflict"}
+{"input": "Fresh Basket reported dealer asking for extra discount; stock movement slowing this week. Impact visible on Family Snack Combo.", "output": "pricing_conflict"}
+{"input": "Annapurna Super Market reported retailer unhappy with support; customers already asking questions. Impact visible on 500ml Cola Bottle.", "output": "retailer_dissatisfaction"}
+{"input": "Sai Durga Mart reported retailer unhappy with support; counter staff highlighted repeated occurrence. Impact visible on Family Snack Combo.", "output": "retailer_dissatisfaction"}
+{"input": "Sri Lakshmi Traders reported retailer shifting shelf space; similar feedback heard from nearby outlets. Impact visible on Premium Biscuits.", "output": "competitor_pressure"}
+{"input": "Ganesh Provisions reported dealer asking for extra discount; store comparing us with competitor supply. Impact visible on Family Snack Combo.", "output": "pricing_conflict"}
+{"input": "Sai Durga Mart reported bulk purchases observed; similar feedback heard from nearby outlets. Impact visible on Regular Soap Bar.", "output": "demand_spike"}
+{"input": "Sai Durga Mart reported SKU missing in latest load; morning sales impacted badly. Impact visible on 1L Juice Bottle.", "output": "supply_chain_delay"}
+{"input": "Sai Durga Mart reported rival brand pushing aggressive offers; issue affecting secondary sales. Impact visible on Family Snack Combo.", "output": "competitor_pressure"}
+{"input": "Mahalaxmi Agencies reported MRP confusion creating arguments; team asked for immediate follow-up. Impact visible on Premium Biscuits.", "output": "pricing_conflict"}
+{"input": "Ganesh Provisions reported retailer running out of fast movers; stock movement slowing this week. Impact visible on Family Snack Combo.", "output": "supply_chain_delay"}
+{"input": "Fresh Basket reported SKU missing in latest load; similar feedback heard from nearby outlets. Impact visible on Mini Noodles Pack.", "output": "supply_chain_delay"}
+{"input": "Annapurna Super Market reported retailer asking urgent refill; counter staff highlighted repeated occurrence. Impact visible on Masala Chips Pack.", "output": "demand_spike"}
+{"input": "Mahalaxmi Agencies reported competitor giving higher retailer incentive; customers already asking questions. Impact visible on Economy Rice Pack.", "output": "competitor_pressure"}
+{"input": "Mahalaxmi Agencies reported owner upset about unresolved issue; store comparing us with competitor supply. Impact visible on Family Snack Combo.", "output": "retailer_dissatisfaction"}
+{"input": "Annapurna Super Market reported retailer feels ignored; store comparing us with competitor supply. Impact visible on 500ml Cola Bottle.", "output": "retailer_dissatisfaction"}
+{"input": "Sai Durga Mart reported inventory mismatch reported; store comparing us with competitor supply. Impact visible on Regular Soap Bar.", "output": "supply_chain_delay"}
+{"input": "Kiran General Store reported partial shipment came; store comparing us with competitor supply. Impact visible on Family Snack Combo.", "output": "supply_chain_delay"}
+{"input": "Fresh Basket reported retailer threatening to reduce orders; team asked for immediate follow-up. Impact visible on Regular Soap Bar.", "output": "retailer_dissatisfaction"}
+{"input": "Balaji Wholesale reported competitor visibility increased sharply; customers already asking questions. Impact visible on Premium Biscuits.", "output": "competitor_pressure"}
+{"input": "Mahalaxmi Agencies reported dealer asking for extra discount; team asked for immediate follow-up. Impact visible on Masala Chips Pack.", "output": "pricing_conflict"}
+{"input": "Ganesh Provisions reported retailer threatening to reduce orders; customers already asking questions. Impact visible on Masala Chips Pack.", "output": "retailer_dissatisfaction"}
+{"input": "Ganesh Provisions reported new brand entering nearby market; customers already asking questions. Impact visible on Mini Noodles Pack.", "output": "competitor_pressure"}
+{"input": "Venkateswara Stores reported billing price higher than expected; retailer sounded frustrated during discussion. Impact visible on Economy Rice Pack.", "output": "pricing_conflict"}
+{"input": "Mahalaxmi Agencies reported MRP confusion creating arguments; stock movement slowing this week. Impact visible on Regular Soap Bar.", "output": "pricing_conflict"}
+{"input": "Mahalaxmi Agencies reported high demand reported since weekend; store owner requested quick action. Impact visible on Economy Rice Pack.", "output": "demand_spike"}
+{"input": "Balaji Wholesale reported retailer asking urgent refill; similar feedback heard from nearby outlets. Impact visible on 500ml Cola Bottle.", "output": "demand_spike"}
+{"input": "Ganesh Provisions reported unexpected jump in movement; retailer sounded frustrated during discussion. Impact visible on 500ml Cola Bottle.", "output": "demand_spike"}
+{"input": "Metro Needs reported competitor visibility increased sharply; similar feedback heard from nearby outlets. Impact visible on Masala Chips Pack.", "output": "competitor_pressure"}
+{"input": "Annapurna Super Market reported retailer asking urgent refill; similar feedback heard from nearby outlets. Impact visible on Regular Soap Bar.", "output": "demand_spike"}
+{"input": "Mahalaxmi Agencies reported scheme calculation dispute raised; counter staff highlighted repeated occurrence. Impact visible on Masala Chips Pack.", "output": "pricing_conflict"}
+{"input": "Venkateswara Stores reported dealer asking for extra discount; store owner requested quick action. Impact visible on Regular Soap Bar.", "output": "pricing_conflict"}
+{"input": "Sai Durga Mart reported scheme calculation dispute raised; stock movement slowing this week. Impact visible on Premium Biscuits.", "output": "pricing_conflict"}
+{"input": "Sri Lakshmi Traders reported partial shipment came; counter staff highlighted repeated occurrence. Impact visible on 500ml Cola Bottle.", "output": "supply_chain_delay"}
+{"input": "Metro Needs reported pricing mismatch noticed; store comparing us with competitor supply. Impact visible on Economy Rice Pack.", "output": "pricing_conflict"}
+{"input": "Sri Lakshmi Traders reported retailer feels ignored; counter staff highlighted repeated occurrence. Impact visible on Masala Chips Pack.", "output": "retailer_dissatisfaction"}
+{"input": "Sri Lakshmi Traders reported owner upset about unresolved issue; team asked for immediate follow-up. Impact visible on Masala Chips Pack.", "output": "retailer_dissatisfaction"}
+{"input": "Sai Durga Mart reported pricing mismatch noticed; store comparing us with competitor supply. Impact visible on Economy Rice Pack.", "output": "pricing_conflict"}
+{"input": "Sri Lakshmi Traders reported SKU missing in latest load; store owner requested quick action. Impact visible on Mini Noodles Pack.", "output": "supply_chain_delay"}
+{"input": "Annapurna Super Market reported competitor visibility increased sharply; counter staff highlighted repeated occurrence. Impact visible on Regular Soap Bar.", "output": "competitor_pressure"}
+{"input": "Mahalaxmi Agencies reported retailer asking urgent refill; similar feedback heard from nearby outlets. Impact visible on 500ml Cola Bottle.", "output": "demand_spike"}
+{"input": "Annapurna Super Market reported owner upset about unresolved issue; store owner requested quick action. Impact visible on 500ml Cola Bottle.", "output": "retailer_dissatisfaction"}
+{"input": "Ganesh Provisions reported billing price higher than expected; similar feedback heard from nearby outlets. Impact visible on 1L Juice Bottle.", "output": "pricing_conflict"}
+{"input": "Metro Needs reported bulk purchases observed; similar feedback heard from nearby outlets. Impact visible on Premium Biscuits.", "output": "demand_spike"}
+{"input": "Venkateswara Stores reported unexpected jump in movement; stock movement slowing this week. Impact visible on Premium Biscuits.", "output": "demand_spike"}
+{"input": "Kiran General Store reported SKU missing in latest load; similar feedback heard from nearby outlets. Impact visible on Family Snack Combo.", "output": "supply_chain_delay"}
+{"input": "Metro Needs reported retailer asking urgent refill; stock movement slowing this week. Impact visible on 500ml Cola Bottle.", "output": "demand_spike"}
+{"input": "Sai Durga Mart reported retailer unhappy with support; team asked for immediate follow-up. Impact visible on Family Snack Combo.", "output": "retailer_dissatisfaction"}
+{"input": "Fresh Basket reported high demand reported since weekend; store owner requested quick action. Impact visible on 1L Juice Bottle.", "output": "demand_spike"}
+{"input": "Fresh Basket reported inventory mismatch reported; customers already asking questions. Impact visible on Regular Soap Bar.", "output": "supply_chain_delay"}
+{"input": "Sri Lakshmi Traders reported billing price higher than expected; stock movement slowing this week. Impact visible on Regular Soap Bar.", "output": "pricing_conflict"}
+{"input": "Ganesh Provisions reported retailer shifting shelf space; issue affecting secondary sales. Impact visible on Premium Biscuits.", "output": "competitor_pressure"}
+{"input": "Fresh Basket reported retailer unhappy with support; counter staff highlighted repeated occurrence. Impact visible on 1L Juice Bottle.", "output": "retailer_dissatisfaction"}
+{"input": "Metro Needs reported retailer threatening to reduce orders; counter staff highlighted repeated occurrence. Impact visible on Family Snack Combo.", "output": "retailer_dissatisfaction"}
+{"input": "Annapurna Super Market reported warehouse still holding dispatch; morning sales impacted badly. Impact visible on Masala Chips Pack.", "output": "supply_chain_delay"}
+{"input": "Ganesh Provisions reported owner upset about unresolved issue; retailer sounded frustrated during discussion. Impact visible on Mini Noodles Pack.", "output": "retailer_dissatisfaction"}
+{"input": "Annapurna Super Market reported unexpected jump in movement; team asked for immediate follow-up. Impact visible on 1L Juice Bottle.", "output": "demand_spike"}
+{"input": "Metro Needs reported rival brand pushing aggressive offers; store comparing us with competitor supply. Impact visible on 500ml Cola Bottle.", "output": "competitor_pressure"}
