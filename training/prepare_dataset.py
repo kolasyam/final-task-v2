@@ -13,7 +13,8 @@ from typing import Dict, List, Tuple
 import pandas as pd
 from sklearn.model_selection import train_test_split
 
-from app.config import CATEGORY_MAP, config
+from app.config import config
+from app.core.constants import CATEGORY_MAP
 
 logger = logging.getLogger(__name__)
 

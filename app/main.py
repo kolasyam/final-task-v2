@@ -42,9 +42,9 @@ async def lifespan(app: FastAPI):
     logger.info("Sales Intelligence API starting up")
     logger.info("API_HOST: %s", config.api_host)
     logger.info("API_PORT: %s", config.api_port)
-    logger.info("OLLAMA_BASE_URL: %s", config.ollama_base_url)
-    logger.info("MODEL_NAME: %s", config.model_name)
-    logger.info("BACKEND: Ollama (gemma:2b + prompt-engineered) + scikit-learn fallback")
+    logger.info("BASE_MODEL_PATH: %s", config.base_model_path)
+    logger.info("QLORA_ADAPTER_PATH: %s", config.qlora_adapter_path)
+    logger.info("BACKEND: QLoRA (Gemma-2B direct GPU) + scikit-learn fallback")
     yield
     logger.info("Sales Intelligence API shutting down")
 

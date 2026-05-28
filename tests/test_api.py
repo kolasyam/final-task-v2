@@ -68,11 +68,15 @@ class TestHealthEndpoint:
         data: Dict = response.json()
         assert data["status"] in ("healthy", "degraded")
 
-    def test_health_returns_ollama_model(self, client: TestClient) -> None:
+    def test_health_returns_model_info(self, client: TestClient) -> None:
         response = client.get("/api/v1/health")
         data: Dict = response.json()
         assert "model_name" in data
-        assert "ollama_available" in data
+
+    def test_health_returns_qlora_available(self, client: TestClient) -> None:
+        response = client.get("/api/v1/health")
+        data: Dict = response.json()
+        assert "qlora_available" in data
         assert "sklearn_available" in data
 
     def test_health_returns_supported_categories(self, client: TestClient) -> None:

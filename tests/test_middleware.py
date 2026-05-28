@@ -4,6 +4,7 @@ Tests authentication, rate limiting, and correlation ID middleware.
 """
 
 import os
+from typing import Dict
 from unittest.mock import MagicMock, patch
 
 import pytest

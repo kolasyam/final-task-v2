@@ -16,8 +16,6 @@ from app.core.exceptions import (
     ServiceUnavailableError,
 )
 from app.services.ollama_client import (
-    CLASSIFICATION_PROMPT,
-    PROMPT_MODEL_NAME,
     OllamaClient,
     RetryConfig,
 )

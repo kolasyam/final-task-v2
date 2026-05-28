@@ -17,6 +17,7 @@ from app.core.constants import SUPPORTED_CATEGORIES
 from app.core.exceptions import CircuitBreakerOpenError
 from app.main import app
 from app.services.circuit_breaker import CircuitBreaker
+from app.services.storage import PredictionStorage
 
 
 # --- API Integration Tests ---

@@ -83,6 +83,7 @@ class InferenceMethod(str, Enum):
     OLLAMA_BASE = "ollama_base"
     OLLAMA_FINETUNED = "ollama_finetuned"
     SKLEARN_TFIDF = "sklearn_tfidf"
+    QLORA_DIRECT = "qlora_direct"
 
 
 # =============================================================================

@@ -2,9 +2,8 @@
 
 Provides endpoints for predicting issue categories from sales
 representative notes using a tiered inference strategy:
-  1. Prompt-engineered Ollama model (gemma-sales-intel) — best accuracy
-  2. Base Ollama model (gemma:2b) — general purpose
-  3. scikit-learn TF-IDF + RandomForest — fast fallback
+  1. QLoRA direct inference (Transformers + PEFT on GPU) — best accuracy
+  2. scikit-learn TF-IDF + RandomForest — fast fallback
 
 All endpoints include structured error handling that maps internal
 exceptions to appropriate HTTP status codes with error response schemas.
@@ -49,7 +48,8 @@ def get_predictor() -> SalesNotePredictor:
     """Get or create the singleton predictor instance.
 
     The predictor is lazily initialized on first call and reused
-    for all subsequent requests.
+    for all subsequent requests. The QLoRA model itself is further
+    lazily loaded on first inference call.
 
     Returns:
         SalesNotePredictor instance.
@@ -99,8 +99,9 @@ def _map_exception_to_http(exc: Exception) -> HTTPException:
 async def predict_category(request: PredictionRequest) -> PredictionResponse:
     """Predict the issue category from a sales representative note.
 
-    Uses the prompt-engineered gemma-sales-intel model if available,
-    otherwise falls back to base gemma:2b or sklearn.
+    Uses the QLoRA fine-tuned Gemma-2B model (direct Transformers + PEFT
+    inference on GPU). Falls back to sklearn TF-IDF + RandomForest if
+    QLoRA inference fails.
 
     Args:
         request: Prediction request containing the sales note text.
@@ -203,7 +204,7 @@ async def health_check() -> HealthResponse:
     """Health check endpoint.
 
     Reports the status of all inference backends including whether
-    the prompt-engineered model is active.
+    the QLoRA model is loaded and ready for inference.
 
     Returns:
         HealthResponse with service status information.
@@ -212,14 +213,14 @@ async def health_check() -> HealthResponse:
     status_info: Dict[str, Any] = predictor.get_status()
 
     is_healthy: bool = (
-        status_info["ollama_available"] or status_info["sklearn_available"]
+        status_info["qlora_available"] or status_info["sklearn_available"]
     )
 
     return HealthResponse(
         status="healthy" if is_healthy else "degraded",
-        ollama_available=status_info["ollama_available"],
+        qlora_available=status_info["qlora_available"],
         sklearn_available=status_info["sklearn_available"],
-        model_name=status_info["model_name"],
+        model_name=status_info.get("base_model", "N/A"),
         supported_categories=SUPPORTED_CATEGORIES,
     )
 
@@ -245,10 +246,13 @@ async def get_full_status() -> dict:
         Dictionary with full system status including model info.
     """
     predictor: SalesNotePredictor = get_predictor()
-    ollama_available: bool = predictor.ollama_available
-    sklearn_available: bool = predictor.sklearn_classifier is not None
+    status_info: Dict[str, Any] = predictor.get_status()
 
     return {
-        "status": "healthy" if (ollama_available or sklearn_available) else "degraded",
-        "inference": predictor.get_status(),
+        "status": (
+            "healthy"
+            if (status_info["qlora_available"] or status_info["sklearn_available"])
+            else "degraded"
+        ),
+        "inference": status_info,
     }

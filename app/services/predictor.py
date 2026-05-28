@@ -1,9 +1,11 @@
 """Prediction service with tiered inference orchestration.
 
 Model priority:
-  1. Prompt-engineered Ollama model (gemma-sales-intel via Modelfile)
-  2. Base Ollama model (gemma:2b) — zero-shot
-  3. scikit-learn TF-IDF + RandomForest — fast local fallback
+  1. QLoRA direct inference (Transformers + PEFT on GPU)
+  2. scikit-learn TF-IDF + RandomForest — fast local fallback
+
+No Ollama dependency — QLoRA loads the Gemma base model + LoRA adapter
+directly via Transformers and PEFT, running fully offline on GPU.
 """
 
 import logging
@@ -19,25 +21,20 @@ from app.core.exceptions import (
     ModelNotFoundError,
     NoInferenceBackendError,
     PredictionError,
+    QLoRAInferenceError,
 )
-from app.services.ollama_client import PROMPT_MODEL_NAME, OllamaClient
 from app.services.preprocessing import TextPreprocessor
+from app.services.qlora_predictor import QLoraPredictor
 from app.services.storage import PredictionStorage
 
 logger = logging.getLogger(__name__)
-
-# Confidence thresholds based on output clarity
-_EXACT_MATCH_CONFIDENCE: float = 0.95
-_SPACE_NORMALIZED_CONFIDENCE: float = 0.85
-_SUBSTRING_MATCH_CONFIDENCE: float = 0.75
-_FUZZY_MATCH_CONFIDENCE: float = 0.60
 
 
 class SklearnClassifier:
     """Wrapper for scikit-learn TF-IDF + RandomForest classification.
 
     Provides fast local classification as the final fallback when
-    no Ollama backend is available.
+    the QLoRA GPU backend is unavailable.
 
     Attributes:
         _vectorizer: Fitted TF-IDF vectorizer.
@@ -98,33 +95,40 @@ class SalesNotePredictor:
     """Orchestrates sales note classification with tiered inference.
 
     Inference priority:
-        1. Prompt-engineered Ollama model (gemma-sales-intel via Modelfile)
-        2. Base Ollama model (gemma:2b) — zero-shot
-        3. scikit-learn TF-IDF + RandomForest — fast fallback
+        1. QLoRA direct inference (GPU, Transformers + PEFT)
+        2. scikit-learn TF-IDF + RandomForest — fast fallback
+
+    The QLoRA predictor is initialized lazily — the model loads on
+    the first .classify() call. If loading fails, the predictor falls
+    back to sklearn for all subsequent requests.
     """
 
     def __init__(self) -> None:
-        """Initialize the predictor, probing Ollama availability."""
+        """Initialize the predictor, setting up backends."""
         self.preprocessor: TextPreprocessor = TextPreprocessor()
         self.storage: PredictionStorage = PredictionStorage()
-        self.ollama_client: OllamaClient = OllamaClient()
+
+        # QLoRA is always attempted (lazy-loaded on first inference)
+        self.qlora_predictor: QLoraPredictor = QLoraPredictor(
+            base_model_path=config.base_model_path,
+            adapter_path=config.qlora_adapter_path,
+            max_new_tokens=config.qlora_max_new_tokens,
+            temperature=config.qlora_temperature,
+        )
+        self.qlora_available: bool = True  # Will be set to False on hard failure
         self.sklearn_classifier: Optional[SklearnClassifier] = None
 
-        self.ollama_available: bool = self.ollama_client.health_check()
-        self.is_prompt_model: bool = self.ollama_client.is_prompt_model
-
-        self._log_initialization_status()
         self._load_sklearn_fallback()
+        self._log_initialization_status()
 
     def _log_initialization_status(self) -> None:
         """Log the initialization status of inference backends."""
-        if self.ollama_available:
-            if self.is_prompt_model:
-                logger.info("Using prompt-engineered model: gemma-sales-intel")
-            else:
-                logger.info("Using base model: gemma:2b")
-        else:
-            logger.warning("Ollama not available — will use sklearn fallback if available")
+        logger.info(
+            "SalesNotePredictor initialized (qlora=%s, sklearn=%s, base_model=%s)",
+            self.qlora_available,
+            self.sklearn_classifier is not None,
+            config.base_model_path,
+        )
 
     def _load_sklearn_fallback(self) -> None:
         """Attempt to load the sklearn fallback classifier."""
@@ -183,6 +187,10 @@ class SalesNotePredictor:
     def _execute_inference(self, cleaned_note: str) -> Dict[str, Any]:
         """Execute inference using the best available backend.
 
+        Priority:
+          1. QLoRA direct (GPU) — loads model lazily on first call
+          2. sklearn (CPU) — fast fallback
+
         Args:
             cleaned_note: Preprocessed note text.
 
@@ -192,59 +200,57 @@ class SalesNotePredictor:
         Raises:
             NoInferenceBackendError: If no backend is available.
         """
-        if self.ollama_available:
-            return self._predict_ollama(cleaned_note)
+        if self.qlora_available:
+            try:
+                return self._predict_qlora(cleaned_note)
+            except QLoRAInferenceError as exc:
+                logger.warning("QLoRA inference failed: %s — attempting sklearn fallback", exc)
+                self.qlora_available = False
+            except Exception as exc:
+                logger.warning("Unexpected QLoRA error: %s — attempting sklearn fallback", exc)
+                self.qlora_available = False
+
         if self.sklearn_classifier is not None:
             return self._predict_sklearn(cleaned_note)
+
         raise NoInferenceBackendError()
 
-    def _predict_ollama(self, cleaned_note: str) -> Dict[str, Any]:
-        """Classify via Ollama (fine-tuned or base model).
+    def _predict_qlora(self, cleaned_note: str) -> Dict[str, Any]:
+        """Classify via QLoRA direct inference (Transformers + PEFT).
 
-        If Ollama returns an unparseable result, falls back to sklearn
-        if available.
+        The QLoraPredictor loads the model lazily on first call.
 
         Args:
             cleaned_note: Preprocessed sales note text.
 
         Returns:
             Prediction result dictionary.
+
+        Raises:
+            QLoRAInferenceError: If inference fails.
         """
         start_time: float = time.time()
-        raw_output: str
-        ollama_elapsed: float
-        raw_output, ollama_elapsed = self.ollama_client.classify_note(cleaned_note)
-        category: Optional[str] = self.ollama_client.extract_category(raw_output)
 
-        if category is None:
-            logger.warning("Ollama returned unparseable: '%s'. Attempting fallback.", raw_output)
-            if self.sklearn_classifier is not None:
-                return self._predict_sklearn(cleaned_note)
-            logger.warning("No fallback available. Using first supported category.")
-            category = SUPPORTED_CATEGORIES[0]
+        try:
+            category: str
+            confidence: float
+            qlora_latency: float
+            category, confidence, qlora_latency = self.qlora_predictor.classify(cleaned_note)
+        except Exception as exc:
+            raise QLoRAInferenceError(
+                f"QLoRA classify failed: {exc}"
+            ) from exc
 
         total_elapsed: float = time.time() - start_time
-        confidence: float = self._estimate_confidence(raw_output, category)
-
-        method: InferenceMethod = (
-            InferenceMethod.OLLAMA_PROMPT_MODEL
-            if self.is_prompt_model
-            else InferenceMethod.OLLAMA_BASE
-        )
-        model_label: str = (
-            PROMPT_MODEL_NAME
-            if self.is_prompt_model
-            else self.ollama_client.base_model_name
-        )
 
         return {
             "issue_category": category,
             "confidence": confidence,
-            "method": method.value,
+            "method": InferenceMethod.QLORA_DIRECT.value,
             "latency_seconds": f"{total_elapsed:.2f}",
             "reasoning": (
-                f"{model_label} classified the note as '{category}' "
-                f"in {total_elapsed:.2f}s"
+                f"QLoRA fine-tuned Gemma-2B classified the note as '{category}' "
+                f"in {total_elapsed:.2f}s (confidence: {confidence:.0%})"
             ),
         }
 
@@ -274,44 +280,24 @@ class SalesNotePredictor:
             ),
         }
 
-    @staticmethod
-    def _estimate_confidence(raw_output: str, category: str) -> float:
-        """Estimate confidence from Ollama output clarity.
-
-        Uses heuristics based on how cleanly the category was extracted:
-          - Exact match: highest confidence
-          - Space-normalized match (underscores replaced with spaces)
-          - Substring match (category found within output)
-          - Fuzzy match (keyword-based): lowest confidence
-
-        Args:
-            raw_output: Raw model output string.
-            category: Extracted category name.
-
-        Returns:
-            Confidence score between 0.0 and 1.0.
-        """
-        cleaned: str = raw_output.lower().strip()
-
-        if cleaned == category:
-            return _EXACT_MATCH_CONFIDENCE
-        if category.replace("_", " ") in cleaned:
-            return _SPACE_NORMALIZED_CONFIDENCE
-        if category in cleaned:
-            return _SUBSTRING_MATCH_CONFIDENCE
-        return _FUZZY_MATCH_CONFIDENCE
-
     def get_status(self) -> Dict[str, Any]:
         """Get the current status of all inference backends.
 
         Returns:
             Status dictionary for health checks and dashboards.
         """
-        return {
-            "ollama_available": self.ollama_available,
-            "is_prompt_model": self.is_prompt_model,
-            "model_name": self.ollama_client.model_name,
-            "base_model": self.ollama_client.base_model_name,
+        status: Dict[str, Any] = {
+            "qlora_available": self.qlora_available,
             "sklearn_available": self.sklearn_classifier is not None,
             "supported_categories": SUPPORTED_CATEGORIES,
+            "base_model": config.base_model_path,
+            "adapter": config.qlora_adapter_path,
         }
+
+        # Include QLoRA detailed status if the predictor exists
+        try:
+            status["qlora_details"] = self.qlora_predictor.get_status()
+        except Exception:
+            pass
+
+        return status

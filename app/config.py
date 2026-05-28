@@ -125,10 +125,21 @@ class AppConfig:
     # --- Security ---
     api_key: str = field(default_factory=lambda: os.getenv("API_KEY", ""))
 
-    # --- QLoRA Finetuning ---
+    # --- QLoRA Direct Inference ---
     qlora_adapter_path: str = field(default_factory=lambda: os.getenv(
         "QLORA_ADAPTER_PATH", "training/saved_model/qlora_adapter",
     ))
+    base_model_path: str = field(default_factory=lambda: os.getenv(
+        "BASE_MODEL_PATH", "/opt/ai-platform/models/gemma-2-2b-it",
+    ))
+    qlora_max_new_tokens: int = field(default_factory=lambda: int(os.getenv(
+        "QLORA_MAX_NEW_TOKENS", "30",
+    )))
+    qlora_temperature: float = field(default_factory=lambda: float(os.getenv(
+        "QLORA_TEMPERATURE", "0.1",
+    )))
+
+    # --- QLoRA Finetuning (training only) ---
     qlora_epochs: int = field(default_factory=lambda: int(os.getenv(
         "QLORA_EPOCHS", "3",
     )))
@@ -144,20 +155,5 @@ class AppConfig:
         """Parse CORS origins string into a list of stripped values."""
         return [o.strip() for o in self.cors_origins.split(",") if o.strip()]
 
-# --- Category Normalization Map ---
-CATEGORY_MAP = {
-    "SUPPLY_CHAIN_ISSUE": "supply_chain_delay",
-    "RETAILER_RELATIONSHIP_ISSUE": "retailer_dissatisfaction",
-    "PRICING_AND_MARGIN_CONFLICT": "pricing_conflict",
-    "COMPETITOR_MARKET_PRESSURE": "competitor_pressure",
-    "DEMAND_SURGE": "demand_spike",
-}
-SUPPORTED_CATEGORIES = [
-    "supply_chain_delay",
-    "retailer_dissatisfaction",
-    "pricing_conflict",
-    "competitor_pressure",
-    "demand_spike",
-]
 # Singleton config instance imported throughout the application
 config = AppConfig()

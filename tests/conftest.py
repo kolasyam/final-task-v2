@@ -1,7 +1,7 @@
 """Shared test fixtures for the Sales Intelligence test suite.
 
-Provides reusable fixtures for mocking Ollama responses, creating
-test datasets, and setting up predictor instances with controlled backends.
+Provides reusable fixtures for mocking QLoRA predictor, sklearn,
+and setting up predictor instances with controlled backends.
 """
 
 import os
@@ -16,121 +16,56 @@ from fastapi.testclient import TestClient
 
 from app.main import app
 from app.services.circuit_breaker import CircuitBreaker
-from app.services.ollama_client import OllamaClient, RetryConfig
 from app.services.predictor import SalesNotePredictor
 from app.services.preprocessing import TextPreprocessor
+from app.services.qlora_predictor import QLoraPredictor
 from app.services.storage import PredictionStorage
 
 
 # =============================================================================
-# Ollama Mock Fixtures
+# QLoRA Predictor Mock Fixtures
 # =============================================================================
 
 
 @pytest.fixture
-def mock_ollama_client() -> MagicMock:
-    """Create a mocked OllamaClient with default responses.
+def mock_qlora_predictor() -> Generator:
+    """Create a QLoRA-backed SalesNotePredictor.
 
-    Returns:
-        MagicMock configured as an OllamaClient.
-    """
-    client = MagicMock(spec=OllamaClient)
-    client.health_check.return_value = True
-    client.model_name = "gemma:2b"
-    client.base_model_name = "gemma:2b"
-    client.is_prompt_model = False
-    client.classify_note.return_value = ("supply_chain_delay", 1.5)
-    client.extract_category.return_value = "supply_chain_delay"
-    return client
-
-
-@pytest.fixture
-def mock_ollama_prompt_model() -> MagicMock:
-    """Create a mocked OllamaClient simulating prompt-engineered model.
-
-    Returns:
-        MagicMock configured as an OllamaClient with prompt model.
-    """
-    client = MagicMock(spec=OllamaClient)
-    client.health_check.return_value = True
-    client.model_name = "gemma-sales-intel"
-    client.base_model_name = "gemma:2b"
-    client.is_prompt_model = True
-    client.classify_note.return_value = ("demand_spike", 0.8)
-    client.extract_category.return_value = "demand_spike"
-    return client
-
-
-@pytest.fixture
-def mock_ollama_timeout() -> MagicMock:
-    """Create a mocked OllamaClient that simulates timeouts.
-
-    Returns:
-        MagicMock that raises TimeoutError on classify_note.
-    """
-    from app.core.exceptions import OllamaTimeoutError
-    client = MagicMock(spec=OllamaClient)
-    client.health_check.return_value = True
-    client.model_name = "gemma:2b"
-    client.base_model_name = "gemma:2b"
-    client.is_prompt_model = False
-    client.classify_note.side_effect = OllamaTimeoutError(timeout=120)
-    return client
-
-
-@pytest.fixture
-def mock_ollama_connection_error() -> MagicMock:
-    """Create a mocked OllamaClient that simulates connection failure.
-
-    Returns:
-        MagicMock that raises ConnectionError on health_check.
-    """
-    client = MagicMock(spec=OllamaClient)
-    client.health_check.return_value = False
-    client.model_name = "gemma:2b"
-    return client
-
-
-@pytest.fixture
-def mock_ollama_unparseable() -> MagicMock:
-    """Create a mocked OllamaClient returning unparseable output.
-
-    Returns:
-        MagicMock where extract_category returns None.
-    """
-    client = MagicMock(spec=OllamaClient)
-    client.health_check.return_value = True
-    client.model_name = "gemma:2b"
-    client.base_model_name = "gemma:2b"
-    client.is_prompt_model = False
-    client.classify_note.return_value = ("some random text", 1.0)
-    client.extract_category.return_value = None
-    return client
-
-
-# =============================================================================
-# Predictor Fixtures
-# =============================================================================
-
-
-@pytest.fixture
-def mock_ollama_predictor(mock_ollama_client: MagicMock) -> Generator:
-    """Create a SalesNotePredictor backed by a mocked Ollama client.
+    The QLoRA predictor is mocked to return controlled responses
+    without requiring GPU or model files.
 
     Yields:
-        SalesNotePredictor instance with mocked backends.
+        SalesNotePredictor instance with mocked QLoRA backend.
     """
+    mock_qlora = MagicMock(spec=QLoraPredictor)
+    mock_qlora.classify.return_value = ("supply_chain_delay", 0.97, 1.5)
+    mock_qlora.health_check.return_value = True
+    mock_qlora.is_loaded = False
+    mock_qlora.get_status.return_value = {
+        "loaded": False,
+        "device": "N/A",
+        "is_cuda": False,
+        "gpu_memory": "N/A (no CUDA)",
+        "base_model": "/opt/ai-platform/models/gemma-2-2b-it",
+        "adapter": "training/saved_model/qlora_adapter",
+        "supported_categories": [
+            "supply_chain_delay",
+            "retailer_dissatisfaction",
+            "pricing_conflict",
+            "competitor_pressure",
+            "demand_spike",
+        ],
+    }
+
     mock_sklearn = MagicMock()
     mock_sklearn.predict.return_value = ("supply_chain_delay", 0.92)
 
     with patch.object(SalesNotePredictor, "__init__", lambda self: None):
         predictor = SalesNotePredictor.__new__(SalesNotePredictor)
-        predictor.ollama_client = mock_ollama_client
-        predictor.ollama_available = True
-        predictor.is_prompt_model = False
+        predictor.qlora_predictor = mock_qlora
+        predictor.qlora_available = True
         predictor.sklearn_classifier = mock_sklearn
-        preprocessor = TextPreprocessor()
-        predictor.preprocessor = preprocessor
+        predictor.preprocessor = TextPreprocessor()
         predictor.storage = MagicMock()
         predictor.storage.save_prediction = MagicMock()
         yield predictor
@@ -138,7 +73,7 @@ def mock_ollama_predictor(mock_ollama_client: MagicMock) -> Generator:
 
 @pytest.fixture
 def mock_sklearn_only_predictor() -> Generator:
-    """Create a SalesNotePredictor with only sklearn backend (no Ollama).
+    """Create a SalesNotePredictor with only sklearn backend (no QLoRA).
 
     Yields:
         SalesNotePredictor instance with sklearn-only fallback.
@@ -148,12 +83,10 @@ def mock_sklearn_only_predictor() -> Generator:
 
     with patch.object(SalesNotePredictor, "__init__", lambda self: None):
         predictor = SalesNotePredictor.__new__(SalesNotePredictor)
-        predictor.ollama_client = MagicMock()
-        predictor.ollama_available = False
-        predictor.is_prompt_model = False
+        predictor.qlora_predictor = MagicMock()
+        predictor.qlora_available = False
         predictor.sklearn_classifier = mock_sklearn
-        preprocessor = TextPreprocessor()
-        predictor.preprocessor = preprocessor
+        predictor.preprocessor = TextPreprocessor()
         predictor.storage = MagicMock()
         predictor.storage.save_prediction = MagicMock()
         yield predictor
@@ -164,16 +97,40 @@ def mock_no_backend_predictor() -> Generator:
     """Create a SalesNotePredictor with no inference backend.
 
     Yields:
-        SalesNotePredictor with neither Ollama nor sklearn.
+        SalesNotePredictor with neither QLoRA nor sklearn.
     """
     with patch.object(SalesNotePredictor, "__init__", lambda self: None):
         predictor = SalesNotePredictor.__new__(SalesNotePredictor)
-        predictor.ollama_client = MagicMock()
-        predictor.ollama_available = False
-        predictor.is_prompt_model = False
+        predictor.qlora_predictor = MagicMock()
+        predictor.qlora_available = False
         predictor.sklearn_classifier = None
-        preprocessor = TextPreprocessor()
-        predictor.preprocessor = preprocessor
+        predictor.preprocessor = TextPreprocessor()
+        predictor.storage = MagicMock()
+        predictor.storage.save_prediction = MagicMock()
+        yield predictor
+
+
+@pytest.fixture
+def mock_qlora_failure_predictor() -> Generator:
+    """Create a predictor where QLoRA fails and falls back to sklearn.
+
+    Yields:
+        SalesNotePredictor where QLoRA raises, forcing sklearn fallback.
+    """
+    from app.core.exceptions import QLoRAInferenceError
+
+    mock_qlora = MagicMock(spec=QLoraPredictor)
+    mock_qlora.classify.side_effect = QLoRAInferenceError("GPU not available")
+
+    mock_sklearn = MagicMock()
+    mock_sklearn.predict.return_value = ("demand_spike", 0.80)
+
+    with patch.object(SalesNotePredictor, "__init__", lambda self: None):
+        predictor = SalesNotePredictor.__new__(SalesNotePredictor)
+        predictor.qlora_predictor = mock_qlora
+        predictor.qlora_available = True
+        predictor.sklearn_classifier = mock_sklearn
+        predictor.preprocessor = TextPreprocessor()
         predictor.storage = MagicMock()
         predictor.storage.save_prediction = MagicMock()
         yield predictor

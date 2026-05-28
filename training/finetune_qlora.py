@@ -30,7 +30,8 @@ from typing import Any, Dict, List, Optional
 import pandas as pd
 import torch
 
-from app.config import SUPPORTED_CATEGORIES, config
+from app.config import config
+from app.core.constants import SUPPORTED_CATEGORIES
 
 logger = logging.getLogger(__name__)
 

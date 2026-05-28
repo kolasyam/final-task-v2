@@ -11,7 +11,6 @@ import pytest
 from app.core.exceptions import CircuitBreakerOpenError
 from app.services.circuit_breaker import (
     CircuitBreaker,
-    CircuitBreakerError,
     CircuitState,
     circuit_breaker,
 )

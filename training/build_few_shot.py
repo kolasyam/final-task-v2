@@ -10,7 +10,8 @@ from typing import Dict, List, Tuple
 
 import pandas as pd
 
-from app.config import SUPPORTED_CATEGORIES, config
+from app.config import config
+from app.core.constants import SUPPORTED_CATEGORIES
 
 logger = logging.getLogger(__name__)
 

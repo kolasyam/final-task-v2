@@ -148,20 +148,20 @@ class HealthResponse(BaseModel):
 
     Attributes:
         status: Service health status.
-        ollama_available: Whether Ollama is reachable.
+        qlora_available: Whether QLoRA inference is available.
         sklearn_available: Whether sklearn fallback is loaded.
-        model_name: Name of the Ollama model.
+        model_name: Base model path or identifier.
         supported_categories: List of supported issue categories.
     """
 
     status: str = Field(..., description="Service health status")
-    ollama_available: bool = Field(
-        ..., description="Whether Ollama is reachable",
+    qlora_available: bool = Field(
+        ..., description="Whether QLoRA inference is available",
     )
     sklearn_available: bool = Field(
         ..., description="Whether sklearn fallback is loaded",
     )
-    model_name: str = Field(..., description="Ollama model name")
+    model_name: str = Field(..., description="Base model path")
     supported_categories: List[str] = Field(
         ..., description="Supported issue categories",
     )

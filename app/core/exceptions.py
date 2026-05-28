@@ -165,6 +165,22 @@ class NoInferenceBackendError(ServiceUnavailableError):
         )
 
 
+class QLoRAInferenceError(ServiceUnavailableError):
+    """Raised when the QLoRA direct inference engine fails.
+
+    Maps to HTTP 503 Service Unavailable.
+    """
+
+    ERROR_CODE = "QLORA_INFERENCE_ERROR"
+    HTTP_STATUS = 503
+
+    def __init__(self, message: str = "") -> None:
+        super().__init__(
+            message=message or "QLoRA inference engine failed. Check GPU availability and model paths.",
+            error_code=self.ERROR_CODE,
+        )
+
+
 class ModelNotFoundError(SalesIntelligenceError):
     """Raised when a required model artifact is not found on disk.
 
