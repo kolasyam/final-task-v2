@@ -36,7 +36,7 @@ def _load_test_data() -> pd.DataFrame:
     if not os.path.exists(config.dataset_path):
         raise FileNotFoundError(f"Dataset not found: {config.dataset_path}")
 
-    df = pd.read_excel(config.dataset_path)
+    df = pd.read_csv(config.dataset_path)
     df = df[["rep_note", "issue_category"]].dropna()
     df["input"] = df["rep_note"].str.strip()
     df["output"] = df["issue_category"].map({
@@ -81,15 +81,17 @@ def evaluate_qlora(test_df: pd.DataFrame) -> Dict[str, Any]:
 
     logger.info("Loading QLoRA model from %s", adapter_path)
 
-    base_model_name = "google/gemma-2b"
-    tokenizer = AutoTokenizer.from_pretrained(base_model_name, trust_remote_code=True)
+    base_model_name = "/opt/ai-platform/models/gemma-2-2b-it"
+    tokenizer = AutoTokenizer.from_pretrained(base_model_name, trust_remote_code=True,
+    local_files_only=True)
     tokenizer.pad_token = tokenizer.eos_token
 
     base_model = AutoModelForCausalLM.from_pretrained(
         base_model_name,
-        torch_dtype=torch.float16,
+        torch_dtype=torch.bfloat16,
         device_map="auto",
         trust_remote_code=True,
+        local_files_only=True
     )
     model = PeftModel.from_pretrained(base_model, adapter_path)
     model.eval()
@@ -201,7 +203,7 @@ def evaluate_all() -> Dict[str, Any]:
         le = LabelEncoder()
 
         # Quick sklearn eval
-        full_df = pd.read_excel(config.dataset_path)
+        full_df = pd.read_csv(config.dataset_path)
         full_df = full_df[["rep_note", "issue_category"]].dropna()
         full_df["input"] = full_df["rep_note"].str.strip()
         full_df["output"] = full_df["issue_category"].map({

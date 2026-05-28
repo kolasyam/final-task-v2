@@ -1,0 +1,617 @@
+{
+  "test_samples": 100,
+  "methods": {
+    "qlora": {
+      "method": "QLoRA",
+      "accuracy": 0.99,
+      "correct": 99,
+      "total": 100,
+      "avg_latency_seconds": 0.191,
+      "predictions": [
+        {
+          "note": "Venkateswara Stores reported pricing mismatch noticed; counter staff highlighted repeated occurrence",
+          "true": "pricing_conflict",
+          "predicted": "pricing_conflict",
+          "correct": true
+        },
+        {
+          "note": "Kiran General Store reported retailer unhappy with support; team asked for immediate follow-up. Impa",
+          "true": "retailer_dissatisfaction",
+          "predicted": "retailer_dissatisfaction",
+          "correct": true
+        },
+        {
+          "note": "Sri Lakshmi Traders reported dealer asking for extra discount; store owner requested quick action. I",
+          "true": "pricing_conflict",
+          "predicted": "pricing_conflict",
+          "correct": true
+        },
+        {
+          "note": "Ganesh Provisions reported new brand entering nearby market; store owner requested quick action. Imp",
+          "true": "competitor_pressure",
+          "predicted": "competitor_pressure",
+          "correct": true
+        },
+        {
+          "note": "Kiran General Store reported new brand entering nearby market; morning sales impacted badly. Impact ",
+          "true": "competitor_pressure",
+          "predicted": "competitor_pressure",
+          "correct": true
+        },
+        {
+          "note": "Balaji Wholesale reported dealer losing patience; retailer sounded frustrated during discussion. Imp",
+          "true": "retailer_dissatisfaction",
+          "predicted": "retailer_dissatisfaction",
+          "correct": true
+        },
+        {
+          "note": "Sai Durga Mart reported unexpected jump in movement; counter staff highlighted repeated occurrence. ",
+          "true": "demand_spike",
+          "predicted": "demand_spike",
+          "correct": true
+        },
+        {
+          "note": "Mahalaxmi Agencies reported MRP confusion creating arguments; counter staff highlighted repeated occ",
+          "true": "pricing_conflict",
+          "predicted": "pricing_conflict",
+          "correct": true
+        },
+        {
+          "note": "Mahalaxmi Agencies reported retailer feels ignored; customers already asking questions. Impact visib",
+          "true": "retailer_dissatisfaction",
+          "predicted": "retailer_dissatisfaction",
+          "correct": true
+        },
+        {
+          "note": "Metro Needs reported delivery pushed again; similar feedback heard from nearby outlets. Impact visib",
+          "true": "supply_chain_delay",
+          "predicted": "supply_chain_delay",
+          "correct": true
+        },
+        {
+          "note": "Mahalaxmi Agencies reported delivery pushed again; issue affecting secondary sales. Impact visible o",
+          "true": "supply_chain_delay",
+          "predicted": "supply_chain_delay",
+          "correct": true
+        },
+        {
+          "note": "Fresh Basket reported unexpected jump in movement; morning sales impacted badly. Impact visible on 5",
+          "true": "demand_spike",
+          "predicted": "demand_spike",
+          "correct": true
+        },
+        {
+          "note": "Annapurna Super Market reported retailer asking urgent refill; stock movement slowing this week. Imp",
+          "true": "demand_spike",
+          "predicted": "demand_spike",
+          "correct": true
+        },
+        {
+          "note": "Sri Lakshmi Traders reported high demand reported since weekend; retailer sounded frustrated during ",
+          "true": "demand_spike",
+          "predicted": "demand_spike",
+          "correct": true
+        },
+        {
+          "note": "Kiran General Store reported delivery pushed again; issue affecting secondary sales. Impact visible ",
+          "true": "supply_chain_delay",
+          "predicted": "supply_chain_delay",
+          "correct": true
+        },
+        {
+          "note": "Sri Lakshmi Traders reported high demand reported since weekend; customers already asking questions.",
+          "true": "demand_spike",
+          "predicted": "demand_spike",
+          "correct": true
+        },
+        {
+          "note": "Kiran General Store reported owner upset about unresolved issue; retailer sounded frustrated during ",
+          "true": "retailer_dissatisfaction",
+          "predicted": "retailer_dissatisfaction",
+          "correct": true
+        },
+        {
+          "note": "Balaji Wholesale reported competitor giving higher retailer incentive; store owner requested quick a",
+          "true": "competitor_pressure",
+          "predicted": "competitor_pressure",
+          "correct": true
+        },
+        {
+          "note": "Balaji Wholesale reported stock not received; store owner requested quick action. Impact visible on ",
+          "true": "supply_chain_delay",
+          "predicted": "supply_chain_delay",
+          "correct": true
+        },
+        {
+          "note": "Mahalaxmi Agencies reported unexpected jump in movement; store owner requested quick action. Impact ",
+          "true": "demand_spike",
+          "predicted": "demand_spike",
+          "correct": true
+        },
+        {
+          "note": "Venkateswara Stores reported bulk purchases observed; store owner requested quick action. Impact vis",
+          "true": "demand_spike",
+          "predicted": "demand_spike",
+          "correct": true
+        },
+        {
+          "note": "Venkateswara Stores reported dealer losing patience; morning sales impacted badly. Impact visible on",
+          "true": "retailer_dissatisfaction",
+          "predicted": "retailer_dissatisfaction",
+          "correct": true
+        },
+        {
+          "note": "Annapurna Super Market reported high demand reported since weekend; issue affecting secondary sales.",
+          "true": "demand_spike",
+          "predicted": "demand_spike",
+          "correct": true
+        },
+        {
+          "note": "Annapurna Super Market reported scheme calculation dispute raised; store owner requested quick actio",
+          "true": "pricing_conflict",
+          "predicted": "pricing_conflict",
+          "correct": true
+        },
+        {
+          "note": "Metro Needs reported retailer feels ignored; stock movement slowing this week. Impact visible on 500",
+          "true": "retailer_dissatisfaction",
+          "predicted": "retailer_dissatisfaction",
+          "correct": true
+        },
+        {
+          "note": "Kiran General Store reported rival brand pushing aggressive offers; retailer sounded frustrated duri",
+          "true": "competitor_pressure",
+          "predicted": "competitor_pressure",
+          "correct": true
+        },
+        {
+          "note": "Fresh Basket reported dealer asking for extra discount; morning sales impacted badly. Impact visible",
+          "true": "pricing_conflict",
+          "predicted": "pricing_conflict",
+          "correct": true
+        },
+        {
+          "note": "Fresh Basket reported bulk purchases observed; retailer sounded frustrated during discussion. Impact",
+          "true": "demand_spike",
+          "predicted": "demand_spike",
+          "correct": true
+        },
+        {
+          "note": "Fresh Basket reported competitor giving higher retailer incentive; morning sales impacted badly. Imp",
+          "true": "competitor_pressure",
+          "predicted": "competitor_pressure",
+          "correct": true
+        },
+        {
+          "note": "Annapurna Super Market reported delivery pushed again; similar feedback heard from nearby outlets. I",
+          "true": "supply_chain_delay",
+          "predicted": "supply_chain_delay",
+          "correct": true
+        },
+        {
+          "note": "Sri Lakshmi Traders reported partial shipment came; stock movement slowing this week. Impact visible",
+          "true": "supply_chain_delay",
+          "predicted": "supply_chain_delay",
+          "correct": true
+        },
+        {
+          "note": "Ganesh Provisions reported partial shipment came; morning sales impacted badly. Impact visible on Mi",
+          "true": "supply_chain_delay",
+          "predicted": "supply_chain_delay",
+          "correct": true
+        },
+        {
+          "note": "Sai Durga Mart reported inventory mismatch reported; store comparing us with competitor supply. Impa",
+          "true": "supply_chain_delay",
+          "predicted": "supply_chain_delay",
+          "correct": true
+        },
+        {
+          "note": "Balaji Wholesale reported dealer losing patience; similar feedback heard from nearby outlets. Impact",
+          "true": "retailer_dissatisfaction",
+          "predicted": "retailer_dissatisfaction",
+          "correct": true
+        },
+        {
+          "note": "Fresh Basket reported retailer running out of fast movers; morning sales impacted badly. Impact visi",
+          "true": "supply_chain_delay",
+          "predicted": "supply_chain_delay",
+          "correct": true
+        },
+        {
+          "note": "Fresh Basket reported pricing mismatch noticed; customers already asking questions. Impact visible o",
+          "true": "pricing_conflict",
+          "predicted": "pricing_conflict",
+          "correct": true
+        },
+        {
+          "note": "Venkateswara Stores reported competitor visibility increased sharply; customers already asking quest",
+          "true": "competitor_pressure",
+          "predicted": "competitor_pressure",
+          "correct": true
+        },
+        {
+          "note": "Ganesh Provisions reported MRP confusion creating arguments; customers already asking questions. Imp",
+          "true": "pricing_conflict",
+          "predicted": "pricing_conflict",
+          "correct": true
+        },
+        {
+          "note": "Annapurna Super Market reported retailer asking urgent refill; similar feedback heard from nearby ou",
+          "true": "demand_spike",
+          "predicted": "demand_spike",
+          "correct": true
+        },
+        {
+          "note": "Annapurna Super Market reported dealer losing patience; stock movement slowing this week. Impact vis",
+          "true": "retailer_dissatisfaction",
+          "predicted": "retailer_dissatisfaction",
+          "correct": true
+        },
+        {
+          "note": "Venkateswara Stores reported competitor visibility increased sharply; team asked for immediate follo",
+          "true": "competitor_pressure",
+          "predicted": "competitor_pressure",
+          "correct": true
+        },
+        {
+          "note": "Balaji Wholesale reported retailer feels ignored; team asked for immediate follow-up. Impact visible",
+          "true": "retailer_dissatisfaction",
+          "predicted": "retailer_dissatisfaction",
+          "correct": true
+        },
+        {
+          "note": "Balaji Wholesale reported billing price higher than expected; retailer sounded frustrated during dis",
+          "true": "pricing_conflict",
+          "predicted": "pricing_conflict",
+          "correct": true
+        },
+        {
+          "note": "Balaji Wholesale reported stock not received; store owner requested quick action. Impact visible on ",
+          "true": "supply_chain_delay",
+          "predicted": "supply_chain_delay",
+          "correct": true
+        },
+        {
+          "note": "Balaji Wholesale reported billing price higher than expected; store comparing us with competitor sup",
+          "true": "pricing_conflict",
+          "predicted": "pricing_conflict",
+          "correct": true
+        },
+        {
+          "note": "Sri Lakshmi Traders reported competitor visibility increased sharply; store comparing us with compet",
+          "true": "competitor_pressure",
+          "predicted": "competitor_pressure",
+          "correct": true
+        },
+        {
+          "note": "Sri Lakshmi Traders reported delivery pushed again; similar feedback heard from nearby outlets. Impa",
+          "true": "supply_chain_delay",
+          "predicted": "supply_chain_delay",
+          "correct": true
+        },
+        {
+          "note": "Mahalaxmi Agencies reported competitor visibility increased sharply; morning sales impacted badly. I",
+          "true": "competitor_pressure",
+          "predicted": "competitor_pressure",
+          "correct": true
+        },
+        {
+          "note": "Kiran General Store reported bulk purchases observed; morning sales impacted badly. Impact visible o",
+          "true": "demand_spike",
+          "predicted": "demand_spike",
+          "correct": true
+        },
+        {
+          "note": "Ganesh Provisions reported retailer asking urgent refill; similar feedback heard from nearby outlets",
+          "true": "demand_spike",
+          "predicted": "demand_spike",
+          "correct": true
+        },
+        {
+          "note": "Balaji Wholesale reported competitor giving higher retailer incentive; morning sales impacted badly.",
+          "true": "competitor_pressure",
+          "predicted": "competitor_pressure",
+          "correct": true
+        },
+        {
+          "note": "Metro Needs reported retailer unhappy with support; similar feedback heard from nearby outlets. Impa",
+          "true": "retailer_dissatisfaction",
+          "predicted": "retailer_dissatisfaction",
+          "correct": true
+        },
+        {
+          "note": "Mahalaxmi Agencies reported competitor giving higher retailer incentive; counter staff highlighted r",
+          "true": "competitor_pressure",
+          "predicted": "pricing_conflict",
+          "correct": false
+        },
+        {
+          "note": "Sai Durga Mart reported pricing mismatch noticed; morning sales impacted badly. Impact visible on Fa",
+          "true": "pricing_conflict",
+          "predicted": "pricing_conflict",
+          "correct": true
+        },
+        {
+          "note": "Sai Durga Mart reported retailer shifting shelf space; morning sales impacted badly. Impact visible ",
+          "true": "competitor_pressure",
+          "predicted": "competitor_pressure",
+          "correct": true
+        },
+        {
+          "note": "Annapurna Super Market reported MRP confusion creating arguments; store owner requested quick action",
+          "true": "pricing_conflict",
+          "predicted": "pricing_conflict",
+          "correct": true
+        },
+        {
+          "note": "Sai Durga Mart reported SKU missing in latest load; counter staff highlighted repeated occurrence. I",
+          "true": "supply_chain_delay",
+          "predicted": "supply_chain_delay",
+          "correct": true
+        },
+        {
+          "note": "Fresh Basket reported delivery pushed again; similar feedback heard from nearby outlets. Impact visi",
+          "true": "supply_chain_delay",
+          "predicted": "supply_chain_delay",
+          "correct": true
+        },
+        {
+          "note": "Kiran General Store reported retailer shifting shelf space; customers already asking questions. Impa",
+          "true": "competitor_pressure",
+          "predicted": "competitor_pressure",
+          "correct": true
+        },
+        {
+          "note": "Balaji Wholesale reported competitor giving higher retailer incentive; similar feedback heard from n",
+          "true": "competitor_pressure",
+          "predicted": "competitor_pressure",
+          "correct": true
+        },
+        {
+          "note": "Venkateswara Stores reported retailer threatening to reduce orders; morning sales impacted badly. Im",
+          "true": "retailer_dissatisfaction",
+          "predicted": "retailer_dissatisfaction",
+          "correct": true
+        },
+        {
+          "note": "Fresh Basket reported scheme calculation dispute raised; issue affecting secondary sales. Impact vis",
+          "true": "pricing_conflict",
+          "predicted": "pricing_conflict",
+          "correct": true
+        },
+        {
+          "note": "Ganesh Provisions reported retailer feels ignored; team asked for immediate follow-up. Impact visibl",
+          "true": "retailer_dissatisfaction",
+          "predicted": "retailer_dissatisfaction",
+          "correct": true
+        },
+        {
+          "note": "Fresh Basket reported retailer unhappy with support; store comparing us with competitor supply. Impa",
+          "true": "retailer_dissatisfaction",
+          "predicted": "retailer_dissatisfaction",
+          "correct": true
+        },
+        {
+          "note": "Fresh Basket reported competitor giving higher retailer incentive; stock movement slowing this week.",
+          "true": "competitor_pressure",
+          "predicted": "competitor_pressure",
+          "correct": true
+        },
+        {
+          "note": "Sai Durga Mart reported billing price higher than expected; team asked for immediate follow-up. Impa",
+          "true": "pricing_conflict",
+          "predicted": "pricing_conflict",
+          "correct": true
+        },
+        {
+          "note": "Venkateswara Stores reported billing price higher than expected; retailer sounded frustrated during ",
+          "true": "pricing_conflict",
+          "predicted": "pricing_conflict",
+          "correct": true
+        },
+        {
+          "note": "Mahalaxmi Agencies reported dealer losing patience; counter staff highlighted repeated occurrence. I",
+          "true": "retailer_dissatisfaction",
+          "predicted": "retailer_dissatisfaction",
+          "correct": true
+        },
+        {
+          "note": "Sri Lakshmi Traders reported high demand reported since weekend; store owner requested quick action.",
+          "true": "demand_spike",
+          "predicted": "demand_spike",
+          "correct": true
+        },
+        {
+          "note": "Balaji Wholesale reported retailer shifting shelf space; team asked for immediate follow-up. Impact ",
+          "true": "competitor_pressure",
+          "predicted": "competitor_pressure",
+          "correct": true
+        },
+        {
+          "note": "Fresh Basket reported retailer unhappy with support; customers already asking questions. Impact visi",
+          "true": "retailer_dissatisfaction",
+          "predicted": "retailer_dissatisfaction",
+          "correct": true
+        },
+        {
+          "note": "Annapurna Super Market reported dealer asking for extra discount; customers already asking questions",
+          "true": "pricing_conflict",
+          "predicted": "pricing_conflict",
+          "correct": true
+        },
+        {
+          "note": "Venkateswara Stores reported SKU missing in latest load; counter staff highlighted repeated occurren",
+          "true": "supply_chain_delay",
+          "predicted": "supply_chain_delay",
+          "correct": true
+        },
+        {
+          "note": "Sai Durga Mart reported dealer asking for extra discount; counter staff highlighted repeated occurre",
+          "true": "pricing_conflict",
+          "predicted": "pricing_conflict",
+          "correct": true
+        },
+        {
+          "note": "Ganesh Provisions reported retailer threatening to reduce orders; customers already asking questions",
+          "true": "retailer_dissatisfaction",
+          "predicted": "retailer_dissatisfaction",
+          "correct": true
+        },
+        {
+          "note": "Annapurna Super Market reported stock not received; team asked for immediate follow-up. Impact visib",
+          "true": "supply_chain_delay",
+          "predicted": "supply_chain_delay",
+          "correct": true
+        },
+        {
+          "note": "Sai Durga Mart reported warehouse still holding dispatch; stock movement slowing this week. Impact v",
+          "true": "supply_chain_delay",
+          "predicted": "supply_chain_delay",
+          "correct": true
+        },
+        {
+          "note": "Fresh Basket reported retailer threatening to reduce orders; morning sales impacted badly. Impact vi",
+          "true": "retailer_dissatisfaction",
+          "predicted": "retailer_dissatisfaction",
+          "correct": true
+        },
+        {
+          "note": "Sai Durga Mart reported new brand entering nearby market; stock movement slowing this week. Impact v",
+          "true": "competitor_pressure",
+          "predicted": "competitor_pressure",
+          "correct": true
+        },
+        {
+          "note": "Fresh Basket reported partial shipment came; retailer sounded frustrated during discussion. Impact v",
+          "true": "supply_chain_delay",
+          "predicted": "supply_chain_delay",
+          "correct": true
+        },
+        {
+          "note": "Venkateswara Stores reported retailer asking urgent refill; similar feedback heard from nearby outle",
+          "true": "demand_spike",
+          "predicted": "demand_spike",
+          "correct": true
+        },
+        {
+          "note": "Annapurna Super Market reported fast-moving SKU selling out quickly; issue affecting secondary sales",
+          "true": "demand_spike",
+          "predicted": "demand_spike",
+          "correct": true
+        },
+        {
+          "note": "Balaji Wholesale reported unexpected jump in movement; retailer sounded frustrated during discussion",
+          "true": "demand_spike",
+          "predicted": "demand_spike",
+          "correct": true
+        },
+        {
+          "note": "Annapurna Super Market reported retailer shifting shelf space; store comparing us with competitor su",
+          "true": "competitor_pressure",
+          "predicted": "competitor_pressure",
+          "correct": true
+        },
+        {
+          "note": "Ganesh Provisions reported retailer shifting shelf space; store owner requested quick action. Impact",
+          "true": "competitor_pressure",
+          "predicted": "competitor_pressure",
+          "correct": true
+        },
+        {
+          "note": "Balaji Wholesale reported dealer asking for extra discount; morning sales impacted badly. Impact vis",
+          "true": "pricing_conflict",
+          "predicted": "pricing_conflict",
+          "correct": true
+        },
+        {
+          "note": "Annapurna Super Market reported retailer asking urgent refill; team asked for immediate follow-up. I",
+          "true": "demand_spike",
+          "predicted": "demand_spike",
+          "correct": true
+        },
+        {
+          "note": "Metro Needs reported inventory mismatch reported; team asked for immediate follow-up. Impact visible",
+          "true": "supply_chain_delay",
+          "predicted": "supply_chain_delay",
+          "correct": true
+        },
+        {
+          "note": "Sai Durga Mart reported retailer threatening to reduce orders; store owner requested quick action. I",
+          "true": "retailer_dissatisfaction",
+          "predicted": "retailer_dissatisfaction",
+          "correct": true
+        },
+        {
+          "note": "Venkateswara Stores reported retailer feels ignored; customers already asking questions. Impact visi",
+          "true": "retailer_dissatisfaction",
+          "predicted": "retailer_dissatisfaction",
+          "correct": true
+        },
+        {
+          "note": "Fresh Basket reported retailer shifting shelf space; store owner requested quick action. Impact visi",
+          "true": "competitor_pressure",
+          "predicted": "competitor_pressure",
+          "correct": true
+        },
+        {
+          "note": "Kiran General Store reported partial shipment came; morning sales impacted badly. Impact visible on ",
+          "true": "supply_chain_delay",
+          "predicted": "supply_chain_delay",
+          "correct": true
+        },
+        {
+          "note": "Metro Needs reported retailer running out of fast movers; customers already asking questions. Impact",
+          "true": "supply_chain_delay",
+          "predicted": "supply_chain_delay",
+          "correct": true
+        },
+        {
+          "note": "Annapurna Super Market reported retailer asking urgent refill; stock movement slowing this week. Imp",
+          "true": "demand_spike",
+          "predicted": "demand_spike",
+          "correct": true
+        },
+        {
+          "note": "Balaji Wholesale reported high demand reported since weekend; team asked for immediate follow-up. Im",
+          "true": "demand_spike",
+          "predicted": "demand_spike",
+          "correct": true
+        },
+        {
+          "note": "Balaji Wholesale reported billing price higher than expected; stock movement slowing this week. Impa",
+          "true": "pricing_conflict",
+          "predicted": "pricing_conflict",
+          "correct": true
+        },
+        {
+          "note": "Venkateswara Stores reported retailer asking urgent refill; customers already asking questions. Impa",
+          "true": "demand_spike",
+          "predicted": "demand_spike",
+          "correct": true
+        },
+        {
+          "note": "Venkateswara Stores reported retailer feels ignored; counter staff highlighted repeated occurrence. ",
+          "true": "retailer_dissatisfaction",
+          "predicted": "retailer_dissatisfaction",
+          "correct": true
+        },
+        {
+          "note": "Kiran General Store reported MRP confusion creating arguments; similar feedback heard from nearby ou",
+          "true": "pricing_conflict",
+          "predicted": "pricing_conflict",
+          "correct": true
+        },
+        {
+          "note": "Sai Durga Mart reported MRP confusion creating arguments; retailer sounded frustrated during discuss",
+          "true": "pricing_conflict",
+          "predicted": "pricing_conflict",
+          "correct": true
+        }
+      ]
+    },
+    "sklearn": {
+      "error": "name 'TfidfVectorizer' is not defined"
+    }
+  }
+}

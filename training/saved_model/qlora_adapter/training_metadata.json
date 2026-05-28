@@ -1,0 +1,15 @@
+{
+  "method": "QLoRA",
+  "base_model": "/opt/ai-platform/models/gemma-2-2b-it",
+  "train_samples": 400,
+  "eval_samples": 100,
+  "epochs": 3,
+  "learning_rate": 0.0002,
+  "batch_size": 4,
+  "lora_rank": 16,
+  "lora_alpha": 32,
+  "trainable_params": 20766720,
+  "total_params": 1622970624,
+  "train_loss": 0.294555002450943,
+  "gpu": "NVIDIA L40S"
+}

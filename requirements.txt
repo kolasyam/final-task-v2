@@ -1,0 +1,42 @@
+# Sales Intelligence - Enterprise Requirements
+# Compatible with VPN-hosted / offline environments
+# Python 3.10+
+
+# --- Core Web Framework ---
+fastapi==0.136.1
+uvicorn==0.47.0
+streamlit==1.57.0
+
+# --- Data Processing ---
+pandas==3.0.3
+numpy==2.4.6
+openpyxl==3.1.5
+scikit-learn==1.8.0
+
+# --- ML Experiment Tracking ---
+# mlflow>=2.9.0
+
+# --- LLM Integration (Local / Ollama) ---
+ollama==0.6.2
+requests==2.34.2
+
+# --- Validation & Config ---
+pydantic==2.13.4
+python-dotenv==1.2.2
+
+# --- Visualization (inline only, no GUI) ---
+matplotlib-inline==0.2.2
+
+# --- Testing ---
+pytest==9.0.3
+pytest-cov==7.1.0
+httpx==0.28.1
+
+# --- QLoRA Fine-tuning (GPU Required) ---
+# Install only if you have CUDA GPU with 6GB+ VRAM
+peft==0.19.1
+trl==1.4.0
+bitsandbytes==0.49.2
+transformers==5.9.0
+datasets==4.8.5
+accelerate==1.13.0

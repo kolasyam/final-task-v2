@@ -38,7 +38,7 @@ OLLAMA_MODELFILE: str = "training/saved_model/Modelfile.qlora"
 
 
 def merge_adapter(
-    base_model: str = "google/gemma-2b",
+    base_model: str = "/opt/ai-platform/models/gemma-2-2b-it",
     adapter_path: Optional[str] = None,
     output_path: str = "training/saved_model/qlora_merged",
 ) -> str:
@@ -66,10 +66,12 @@ def merge_adapter(
         torch_dtype="auto",
         device_map="cpu",
         trust_remote_code=True,
+        local_files_only=True,
     )
 
     logger.info("Loading adapter from: %s", adapter_path)
-    tokenizer = AutoTokenizer.from_pretrained(adapter_path, trust_remote_code=True)
+    tokenizer = AutoTokenizer.from_pretrained(adapter_path, trust_remote_code=True,
+    local_files_only=True,)
     model = PeftModel.from_pretrained(model, adapter_path)
 
     logger.info("Merging adapter into base model...")
@@ -208,7 +210,7 @@ def generate_ollama_modelfile(
 
 
 def convert_pipeline(
-    base_model: str = "google/gemma-2b",
+    base_model: str = "/opt/ai-platform/models/gemma-2-2b-it",
     adapter_path: Optional[str] = None,
     skip_gguf: bool = False,
 ) -> Dict[str, Any]:

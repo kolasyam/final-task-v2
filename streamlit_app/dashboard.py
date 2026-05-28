@@ -20,7 +20,7 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 load_dotenv()
 
-API_BASE_URL: str = os.getenv("API_BASE_URL", "http://localhost:8000")
+API_BASE_URL: str = os.getenv("API_BASE_URL", "http://localhost:8002")
 
 st.set_page_config(
     page_title="Sales Intelligence Extractor",

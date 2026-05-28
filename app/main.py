@@ -75,7 +75,7 @@ app.add_middleware(
 app.add_middleware(CorrelationIdMiddleware)
 
 # --- API Key Auth ---
-app.add_middleware(ApiKeyMiddleware)
+# app.add_middleware(ApiKeyMiddleware)
 
 # --- API Routes ---
 app.include_router(

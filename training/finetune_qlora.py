@@ -207,10 +207,12 @@ def finetune(
     )
 
     # Load base model
-    model_name = config.model_name if hasattr(config, "model_name") and "/" in config.model_name else "google/gemma-2b"
+    # model_name = config.model_name if hasattr(config, "model_name") and "/" in config.model_name else "google/gemma-2b"
+    model_name = "/opt/ai-platform/models/gemma-2-2b-it"
     logger.info("Loading base model: %s", model_name)
 
-    tokenizer = AutoTokenizer.from_pretrained(model_name, trust_remote_code=True)
+    tokenizer = AutoTokenizer.from_pretrained(model_name, trust_remote_code=True,
+    local_files_only=True)
     tokenizer.pad_token = tokenizer.eos_token
     tokenizer.padding_side = "right"
 
@@ -219,6 +221,7 @@ def finetune(
         quantization_config=bnb_config,
         device_map="auto",
         trust_remote_code=True,
+        local_files_only=True,
     )
     model.config.use_cache = False
     model.config.pretraining_tp = 1
@@ -252,10 +255,11 @@ def finetune(
         gradient_accumulation_steps=4,
         learning_rate=learning_rate,
         weight_decay=0.001,
-        fp16=True,
+        bf16=True,
+        fp16=False,
         logging_steps=10,
         save_strategy="epoch",
-        evaluation_strategy="epoch",
+        eval_strategy="epoch",
         report_to="none",
         warmup_ratio=0.03,
         lr_scheduler_type="cosine",
@@ -263,15 +267,22 @@ def finetune(
     )
 
     # Trainer
+    # trainer = SFTTrainer(
+    #     model=model,
+    #     train_dataset=train_dataset,
+    #     eval_dataset=eval_dataset,
+    #     # dataset_text_field="text",
+    #     # max_seq_length=MAX_SEQ_LENGTH,
+    #     # tokenizer=tokenizer,
+    #     args=training_args,
+    #     # packing=False,
+    # )
     trainer = SFTTrainer(
         model=model,
         train_dataset=train_dataset,
         eval_dataset=eval_dataset,
-        dataset_text_field="text",
-        max_seq_length=MAX_SEQ_LENGTH,
-        tokenizer=tokenizer,
+        processing_class=tokenizer,
         args=training_args,
-        packing=False,
     )
 
     # Train
